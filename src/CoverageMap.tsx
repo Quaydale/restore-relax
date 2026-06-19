@@ -2,21 +2,20 @@ import { useEffect, useRef } from "react";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 
-// Surrey centre approx lat/lng
-const SURREY_CENTER: [number, number] = [51.235, -0.45];
+// Centred on Woking, 10 mile radius
+const WOKING_CENTER: [number, number] = [51.3193, -0.5566];
 
-// Key towns to label in the coverage area
+// Towns within ~10 miles of Woking
 const TOWNS: { name: string; pos: [number, number] }[] = [
-  { name: "Guildford", pos: [51.2362, -0.5704] },
   { name: "Woking", pos: [51.3193, -0.5566] },
-  { name: "Reigate", pos: [51.2365, -0.2049] },
-  { name: "Dorking", pos: [51.2327, -0.3299] },
-  { name: "Leatherhead", pos: [51.2959, -0.3314] },
-  { name: "Epsom", pos: [51.3354, -0.2689] },
-  { name: "Farnham", pos: [51.2144, -0.7998] },
+  { name: "Guildford", pos: [51.2362, -0.5704] },
   { name: "Camberley", pos: [51.3367, -0.7441] },
-  { name: "Redhill", pos: [51.2403, -0.1709] },
-  { name: "Kingston", pos: [51.4085, -0.2995] },
+  { name: "Leatherhead", pos: [51.2959, -0.3314] },
+  { name: "Byfleet", pos: [51.3396, -0.4804] },
+  { name: "Weybridge", pos: [51.3700, -0.4557] },
+  { name: "Cobham", pos: [51.3307, -0.4097] },
+  { name: "Farnborough", pos: [51.2979, -0.7472] },
+  { name: "Aldershot", pos: [51.2481, -0.7617] },
 ];
 
 export default function CoverageMap() {
@@ -27,8 +26,8 @@ export default function CoverageMap() {
     if (!mapRef.current || instanceRef.current) return;
 
     const map = L.map(mapRef.current, {
-      center: SURREY_CENTER,
-      zoom: 10,
+      center: WOKING_CENTER,
+      zoom: 11,
       zoomControl: true,
       scrollWheelZoom: false,
     });
@@ -39,8 +38,8 @@ export default function CoverageMap() {
     }).addTo(map);
 
     // Coverage circle — roughly 20 mile radius from Guildford
-    L.circle(SURREY_CENTER, {
-      radius: 32000,
+    L.circle(WOKING_CENTER, {
+      radius: 16093,
       color: "#1E3D0E",
       weight: 2,
       fillColor: "#4A6741",

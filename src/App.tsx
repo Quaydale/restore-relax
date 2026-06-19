@@ -361,7 +361,7 @@ export default function App() {
             </h2>
             <div style={{ width: "36px", height: "1px", background: "#C4A45A", margin: "18px auto 24px" }} />
             <p style={{ fontSize: "1.1rem", color: "#5C3D1E", lineHeight: 1.85, fontWeight: 300, maxWidth: "620px", margin: "0 auto" }}>
-              I travel across the <strong style={{ fontWeight: 500, color: "#1E3D0E" }}>Surrey</strong> area to bring professional massage therapy directly to your home. Whether you're in Guildford, Woking, Reigate, Dorking, Epsom, Leatherhead, Farnham, Camberley, Redhill or the surrounding villages — I cover it all.
+              Based in <strong style={{ fontWeight: 500, color: "#1E3D0E" }}>Woking</strong>, I cover a 10 mile radius bringing professional massage therapy directly to your home. Whether you're in Guildford, Camberley, Weybridge, Cobham, Leatherhead, Byfleet or the surrounding villages — I come to you.
             </p>
             <p style={{ fontSize: "1rem", color: "#7A6B58", lineHeight: 1.8, fontWeight: 300, maxWidth: "560px", margin: "16px auto 0", fontStyle: "italic" }}>
               Not sure if you're in range? Just send me a message on WhatsApp and I'll confirm.
@@ -374,7 +374,7 @@ export default function App() {
 
           {/* Town chips */}
           <div className="fade-up" style={{ marginTop: "32px", display: "flex", flexWrap: "wrap", gap: "10px", justifyContent: "center" }}>
-            {["Guildford", "Woking", "Reigate", "Dorking", "Leatherhead", "Epsom", "Farnham", "Camberley", "Redhill", "Kingston", "Cobham", "Oxted", "Haslemere", "Godalming"].map(town => (
+            {["Woking", "Guildford", "Camberley", "Weybridge", "Cobham", "Leatherhead", "Byfleet", "West Byfleet", "Farnborough", "Aldershot", "Fleet", "Send", "Ripley", "Pyrford"].map(town => (
               <span key={town} style={{ background: "#EDE6D4", border: "1px solid rgba(139,105,20,0.2)", padding: "6px 16px", borderRadius: "50px", fontSize: "0.85rem", color: "#5C3D1E", fontFamily: "'Playfair Display', serif" }}>
                 {town}
               </span>
