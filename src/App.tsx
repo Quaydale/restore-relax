@@ -236,7 +236,7 @@ export default function App() {
 
       {/* Navigation */}
       <nav style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 100, background: scrolled ? "rgba(245,240,232,0.96)" : "rgba(20,40,10,0.55)", backdropFilter: "blur(10px)", borderBottom: scrolled ? "1px solid rgba(74,103,65,0.12)" : "1px solid rgba(255,255,255,0.1)", padding: "15px 32px", display: "flex", justifyContent: "space-between", alignItems: "center", transition: "background 0.4s, border-color 0.4s" }}>
-        <span style={{ fontFamily: "'Cormorant Garamond', serif", fontStyle: "italic", fontWeight: 500, color: scrolled ? "#1E3D0E" : "#fff", fontSize: "1.1rem", letterSpacing: "0.5px", transition: "color 0.4s" }}>Restore & Relax</span>
+        <a href="#" onClick={e => { e.preventDefault(); window.scrollTo({ top: 0, behavior: "smooth" }); }} style={{ fontFamily: "'Cormorant Garamond', serif", fontStyle: "italic", fontWeight: 500, color: scrolled ? "#1E3D0E" : "#fff", fontSize: "1.1rem", letterSpacing: "0.5px", transition: "color 0.4s", textDecoration: "none", cursor: "pointer" }}>Restore & Relax</a>
         <div style={{ display: "flex", gap: "20px", alignItems: "center" }}>
           <a href="#services" className="nav-hide-sm" style={{ color: scrolled ? "#1E3D0E" : "#fff" }}>Services</a>
           <a href="#coverage" className="nav-hide-sm" style={{ color: scrolled ? "#1E3D0E" : "#fff" }}>Area</a>
