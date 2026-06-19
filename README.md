@@ -1,73 +1,67 @@
-# React + TypeScript + Vite
+# Restore & Relax by Iulia
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Website for **Restore & Relax**, a mobile massage therapy business based in Woking, Surrey, UK.
 
-Currently, two official plugins are available:
+**Live site:** https://quaydale.github.io/restore-relax/
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+---
 
-## React Compiler
+## Services
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+| Treatment | 60 min | 90 min |
+|---|---|---|
+| Sports Massage | £70 | £100 |
+| Deep Tissue Massage | £70 | £100 |
+| Swedish Massage | £70 | £100 |
+| Pregnancy Massage | £70 | £100 |
+| Manual Lymphatic Drainage | £70 | £100 |
+| Oncology Massage | £60 | — |
 
-## Expanding the ESLint configuration
+Covers a 10-mile radius from Woking including Guildford, Camberley, Weybridge, Cobham, Leatherhead, Byfleet, Farnborough and Aldershot.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+---
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## Tech stack
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+- **React 18 + TypeScript + Vite** — development
+- **Parcel** — production bundle (single self-contained output in `docs/`)
+- **Tailwind CSS** — utility classes
+- **Leaflet + react-leaflet** — interactive coverage map (OpenStreetMap tiles)
+- **Supabase** — reviews database (London region, public read/insert)
+- **GitHub Pages** — hosting from `docs/` on `main` branch
+- **Self-hosted fonts** — Cormorant Garamond + Playfair Display (no Google CDN)
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+---
+
+## Local development
+
+```bash
+pnpm install
+pnpm dev          # Vite dev server at http://localhost:5173
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Building for production
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npx parcel build index.html --dist-dir bundle-out --public-url "./"
+cp bundle-out/* docs/
 ```
+
+Then commit and push `docs/` — GitHub Pages deploys automatically.
+
+---
+
+## Git workflow
+
+- `main` — production branch, GitHub Pages serves from `docs/`
+- `dev` — development branch; open a PR to merge into `main`
+
+---
+
+## Things to personalise
+
+- **WhatsApp number** — replace `[PHONE]` in `src/App.tsx` (3 occurrences) with Iulia's number in international format, e.g. `447911123456`
+- **Hero image** — swap `src/assets/hero-bg.jpg` with Iulia's own photography (rebuild after replacing)
+- **About copy** — update the bio text in `src/App.tsx` (About section)
+- **Opening hours** — update the `openingHoursSpecification` in `index.html` JSON-LD if hours differ from 08:00–20:00
+- **Phone in structured data** — fill in `"telephone": ""` in `index.html` once the number is confirmed
