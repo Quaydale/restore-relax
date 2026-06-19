@@ -1,0 +1,241 @@
+import { useEffect, useState } from "react";
+import { supabase, type Review } from "./supabase";
+
+// ── Star components ──────────────────────────────────────────────────────────
+
+function Star({ filled, onClick, onHover }: { filled: boolean; onClick?: () => void; onHover?: () => void }) {
+  return (
+    <svg
+      onClick={onClick}
+      onMouseEnter={onHover}
+      viewBox="0 0 24 24"
+      width="28"
+      height="28"
+      style={{ cursor: onClick ? "pointer" : "default", flexShrink: 0, transition: "transform 0.15s" }}
+    >
+      <polygon
+        points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"
+        fill={filled ? "#C4A45A" : "none"}
+        stroke={filled ? "#C4A45A" : "#C4A45A"}
+        strokeWidth="1.5"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+function StarRating({ value, onChange }: { value: number; onChange?: (v: number) => void }) {
+  const [hovered, setHovered] = useState(0);
+  const display = hovered || value;
+  return (
+    <div
+      style={{ display: "flex", gap: "4px" }}
+      onMouseLeave={() => setHovered(0)}
+      role={onChange ? "radiogroup" : undefined}
+      aria-label={onChange ? "Star rating" : undefined}
+    >
+      {[1, 2, 3, 4, 5].map(n => (
+        <Star
+          key={n}
+          filled={n <= display}
+          onClick={onChange ? () => onChange(n) : undefined}
+          onHover={onChange ? () => setHovered(n) : undefined}
+        />
+      ))}
+    </div>
+  );
+}
+
+// ── Review form ──────────────────────────────────────────────────────────────
+
+function ReviewForm({ onSubmitted, onPrivacyClick }: { onSubmitted: () => void; onPrivacyClick: () => void }) {
+  const [name, setName] = useState("");
+  const [rating, setRating] = useState(0);
+  const [body, setBody] = useState("");
+  const [consent, setConsent] = useState(false);
+  const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
+  const [errorMsg, setErrorMsg] = useState("");
+
+  const submit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (rating === 0) { setErrorMsg("Please choose a star rating."); return; }
+    if (!consent) { setErrorMsg("Please confirm you have read the privacy policy."); return; }
+    setStatus("submitting");
+    setErrorMsg("");
+    const { error } = await supabase.from("reviews").insert({ name: name.trim(), rating, body: body.trim() });
+    if (error) {
+      setStatus("error");
+      setErrorMsg("Something went wrong — please try again.");
+    } else {
+      setStatus("success");
+      setName(""); setRating(0); setBody("");
+      onSubmitted();
+    }
+  };
+
+  if (status === "success") {
+    return (
+      <div style={{ textAlign: "center", padding: "32px 0" }}>
+        <div style={{ fontSize: "2rem", marginBottom: "12px" }}>✦</div>
+        <p style={{ fontFamily: "'Playfair Display', serif", fontSize: "1.1rem", color: "#1E3D0E", fontWeight: 500 }}>Thank you for your review!</p>
+        <p style={{ fontSize: "0.95rem", color: "#7A6B58", marginTop: "6px", fontStyle: "italic" }}>It means a great deal.</p>
+        <button onClick={() => setStatus("idle")} style={{ marginTop: "20px", background: "none", border: "1px solid #C4A45A", color: "#8B6914", padding: "8px 20px", borderRadius: "50px", cursor: "pointer", fontFamily: "'Playfair Display', serif", fontSize: "0.85rem" }}>
+          Leave another
+        </button>
+      </div>
+    );
+  }
+
+  const inputStyle: React.CSSProperties = {
+    width: "100%", padding: "12px 16px", border: "1px solid rgba(74,103,65,0.25)", borderRadius: "3px",
+    fontFamily: "'Cormorant Garamond', serif", fontSize: "1rem", color: "#1E3D0E",
+    background: "#FAFAF7", outline: "none", transition: "border-color 0.2s",
+  };
+
+  return (
+    <form onSubmit={submit} style={{ display: "flex", flexDirection: "column", gap: "18px" }}>
+      <div>
+        <label style={{ display: "block", fontSize: "0.7rem", letterSpacing: "3px", color: "#8B6914", fontFamily: "'Playfair Display', serif", textTransform: "uppercase", marginBottom: "8px" }}>Your name</label>
+        <input
+          required minLength={2} maxLength={60}
+          value={name} onChange={e => setName(e.target.value)}
+          placeholder="e.g. Sarah M."
+          style={inputStyle}
+        />
+      </div>
+      <div>
+        <label style={{ display: "block", fontSize: "0.7rem", letterSpacing: "3px", color: "#8B6914", fontFamily: "'Playfair Display', serif", textTransform: "uppercase", marginBottom: "8px" }}>Rating</label>
+        <StarRating value={rating} onChange={setRating} />
+      </div>
+      <div>
+        <label style={{ display: "block", fontSize: "0.7rem", letterSpacing: "3px", color: "#8B6914", fontFamily: "'Playfair Display', serif", textTransform: "uppercase", marginBottom: "8px" }}>Your review</label>
+        <textarea
+          required minLength={10} maxLength={500}
+          value={body} onChange={e => setBody(e.target.value)}
+          placeholder="Tell others about your experience..."
+          rows={4}
+          style={{ ...inputStyle, resize: "vertical" }}
+        />
+        <p style={{ fontSize: "0.75rem", color: "#aaa", textAlign: "right", marginTop: "4px" }}>{body.length}/500</p>
+      </div>
+      <label style={{ display: "flex", alignItems: "flex-start", gap: "10px", cursor: "pointer" }}>
+        <input
+          type="checkbox"
+          checked={consent}
+          onChange={e => setConsent(e.target.checked)}
+          style={{ marginTop: "3px", accentColor: "#1E3D0E", width: "16px", height: "16px", flexShrink: 0 }}
+        />
+        <span style={{ fontSize: "0.9rem", color: "#7A6B58", lineHeight: 1.6, fontFamily: "'Cormorant Garamond', serif" }}>
+          I agree that my name, rating and review may be displayed publicly on this website in accordance with the{" "}
+          <button type="button" onClick={onPrivacyClick} style={{ background: "none", border: "none", color: "#4A6741", cursor: "pointer", fontFamily: "'Cormorant Garamond', serif", fontSize: "0.9rem", textDecoration: "underline", padding: 0 }}>
+            Privacy Policy
+          </button>.
+        </span>
+      </label>
+      {errorMsg && <p style={{ fontSize: "0.9rem", color: "#c0392b", fontStyle: "italic" }}>{errorMsg}</p>}
+      <button
+        type="submit"
+        disabled={status === "submitting"}
+        style={{ background: "#1E3D0E", color: "#fff", border: "none", padding: "14px 32px", borderRadius: "3px", fontFamily: "'Playfair Display', serif", fontSize: "1rem", fontWeight: 500, cursor: "pointer", letterSpacing: "0.5px", opacity: status === "submitting" ? 0.6 : 1, transition: "opacity 0.2s, background 0.2s", alignSelf: "flex-start" }}
+      >
+        {status === "submitting" ? "Submitting…" : "Submit Review"}
+      </button>
+    </form>
+  );
+}
+
+// ── Review card ──────────────────────────────────────────────────────────────
+
+function ReviewCard({ review }: { review: Review }) {
+  const date = new Date(review.created_at).toLocaleDateString("en-GB", { month: "long", year: "numeric" });
+  return (
+    <div style={{ background: "#fff", border: "1px solid rgba(74,103,65,0.15)", borderRadius: "3px", padding: "28px 26px", display: "flex", flexDirection: "column", gap: "12px" }}>
+      <StarRating value={review.rating} />
+      <p style={{ fontSize: "1rem", color: "#5C3D1E", lineHeight: 1.75, fontFamily: "'Cormorant Garamond', serif", fontWeight: 300, fontStyle: "italic" }}>
+        "{review.body}"
+      </p>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: "4px" }}>
+        <p style={{ fontFamily: "'Playfair Display', serif", fontSize: "0.9rem", color: "#1E3D0E", fontWeight: 500 }}>{review.name}</p>
+        <p style={{ fontSize: "0.75rem", color: "#aaa", fontFamily: "'Playfair Display', serif" }}>{date}</p>
+      </div>
+    </div>
+  );
+}
+
+// ── Main export ──────────────────────────────────────────────────────────────
+
+export default function Reviews({ onPrivacyClick }: { onPrivacyClick: () => void }) {
+  const [reviews, setReviews] = useState<Review[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [showForm, setShowForm] = useState(false);
+
+  const load = async () => {
+    const { data } = await supabase
+      .from("reviews")
+      .select("*")
+      .order("created_at", { ascending: false });
+    setReviews(data ?? []);
+    setLoading(false);
+  };
+
+  useEffect(() => { load(); }, []);
+
+  const avgRating = reviews.length
+    ? (reviews.reduce((s, r) => s + r.rating, 0) / reviews.length).toFixed(1)
+    : null;
+
+  return (
+    <section id="reviews" style={{ padding: "88px 24px", background: "#F5F0E8" }}>
+      <div style={{ maxWidth: "1080px", margin: "0 auto" }}>
+
+        {/* Header */}
+        <div style={{ textAlign: "center", marginBottom: "56px" }}>
+          <p style={{ fontSize: "0.7rem", letterSpacing: "4px", color: "#8B6914", fontFamily: "'Playfair Display', serif", marginBottom: "16px", textTransform: "uppercase" }}>Client Experiences</p>
+          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontStyle: "italic", fontWeight: 300, fontSize: "clamp(1.9rem, 5vw, 2.7rem)", color: "#1E3D0E" }}>
+            Reviews
+          </h2>
+          <div style={{ width: "36px", height: "1px", background: "#C4A45A", margin: "18px auto 0" }} />
+          {avgRating && (
+            <div style={{ marginTop: "20px", display: "flex", alignItems: "center", justifyContent: "center", gap: "10px" }}>
+              <StarRating value={Math.round(Number(avgRating))} />
+              <span style={{ fontFamily: "'Playfair Display', serif", fontSize: "1.1rem", color: "#1E3D0E" }}>
+                {avgRating} <span style={{ color: "#aaa", fontWeight: 300 }}>({reviews.length} {reviews.length === 1 ? "review" : "reviews"})</span>
+              </span>
+            </div>
+          )}
+        </div>
+
+        {/* Review grid */}
+        {loading ? (
+          <p style={{ textAlign: "center", color: "#aaa", fontStyle: "italic", fontFamily: "'Cormorant Garamond', serif" }}>Loading reviews…</p>
+        ) : reviews.length === 0 ? (
+          <p style={{ textAlign: "center", color: "#aaa", fontStyle: "italic", fontFamily: "'Cormorant Garamond', serif", marginBottom: "40px" }}>No reviews yet — be the first!</p>
+        ) : (
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))", gap: "24px", marginBottom: "48px" }}>
+            {reviews.map(r => <ReviewCard key={r.id} review={r} />)}
+          </div>
+        )}
+
+        {/* Leave a review */}
+        <div style={{ background: "#fff", border: "1px solid rgba(74,103,65,0.15)", borderRadius: "3px", padding: "40px", maxWidth: "600px", margin: "0 auto" }}>
+          <button
+            onClick={() => setShowForm(v => !v)}
+            style={{ background: "none", border: "none", cursor: "pointer", width: "100%", textAlign: "left", padding: 0 }}
+            aria-expanded={showForm}
+          >
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+              <h3 style={{ fontFamily: "'Playfair Display', serif", fontSize: "1.15rem", color: "#1E3D0E", fontWeight: 500 }}>Leave a Review</h3>
+              <span style={{ color: "#C4A45A", fontSize: "1.4rem", transition: "transform 0.3s", display: "inline-block", transform: showForm ? "rotate(45deg)" : "none" }}>+</span>
+            </div>
+          </button>
+          {showForm && (
+            <div style={{ marginTop: "28px" }}>
+              <ReviewForm onSubmitted={() => { load(); }} onPrivacyClick={onPrivacyClick} />
+            </div>
+          )}
+        </div>
+
+      </div>
+    </section>
+  );
+}

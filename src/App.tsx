@@ -2,6 +2,8 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import "./fonts/fonts.css";
 import heroBg from "./assets/hero-bg.jpg";
 import CoverageMap from "./CoverageMap";
+import Reviews from "./Reviews";
+import PrivacyPolicy from "./PrivacyPolicy";
 
 const services = [
   {
@@ -163,6 +165,7 @@ function useScrollAnimation() {
 export default function App() {
   useScrollAnimation();
   const [activeInfo, setActiveInfo] = useState<typeof services[0] | null>(null);
+  const [showPrivacy, setShowPrivacy] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const closeModal = useCallback(() => setActiveInfo(null), []);
 
@@ -178,6 +181,7 @@ export default function App() {
   return (
     <div style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", backgroundColor: "#F5F0E8", minHeight: "100vh" }}>
       {activeInfo && <InfoModal service={activeInfo} onClose={closeModal} />}
+      {showPrivacy && <PrivacyPolicy onClose={() => setShowPrivacy(false)} />}
       <style>{`
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
         html { scroll-behavior: smooth; }
@@ -191,11 +195,20 @@ export default function App() {
         .wa-btn { background: #25D366; color: #fff; display: inline-flex; align-items: center; gap: 10px; padding: 16px 36px; border-radius: 50px; font-size: 1.1rem; font-family: 'Playfair Display', serif; font-weight: 500; letter-spacing: 0.5px; text-decoration: none; transition: background 0.2s, transform 0.2s, box-shadow 0.2s; box-shadow: 0 4px 20px rgba(37,211,102,0.35); }
         .wa-btn:hover { background: #1da851; transform: translateY(-2px); box-shadow: 0 8px 28px rgba(37,211,102,0.45); }
 
-        .sticky-wa { position: fixed; bottom: 20px; right: 16px; z-index: 200; display: none; }
-        @media (max-width: 768px) { .sticky-wa { display: flex; } }
+        /* Floating right WA button — desktop only, shown when scrolled past hero */
+        .wa-float-left { position: fixed; right: 0; top: 50%; transform: translateY(-50%); z-index: 200; display: flex; flex-direction: column; align-items: center; background: #25D366; color: #fff; text-decoration: none; border-radius: 8px 0 0 8px; padding: 14px 8px 14px 10px; gap: 8px; box-shadow: -3px 0 16px rgba(37,211,102,0.3); transition: background 0.2s, padding 0.2s; }
+        .wa-float-left:hover { background: #1da851; padding-left: 14px; }
+        .wa-float-left span { writing-mode: vertical-rl; transform: rotate(180deg); font-family: 'Playfair Display', serif; font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase; font-weight: 500; opacity: 0.9; }
+        @media (max-width: 768px) { .wa-float-left { display: none; } }
+
+        /* Mobile WA icon in nav top-left */
+        .wa-nav-icon { display: none; align-items: center; justify-content: center; background: #25D366; border-radius: 50%; width: 34px; height: 34px; flex-shrink: 0; }
+        @media (max-width: 768px) { .wa-nav-icon { display: flex; } }
 
         nav a { text-decoration: none; font-family: 'Playfair Display', serif; font-size: 0.85rem; letter-spacing: 1.5px; text-transform: uppercase; opacity: 0.85; transition: opacity 0.2s, color 0.4s; }
         nav a:hover { opacity: 1; }
+        @media (max-width: 520px) { .nav-hide-sm { display: none; } }
+        @media (max-width: 400px) { nav { padding: 14px 16px; } }
 
         .price-pill { background: #EDE6D4; border: 1px solid rgba(139,105,20,0.2); padding: 6px 14px; border-radius: 50px; font-size: 0.9rem; color: #5C3D1E; font-family: 'Playfair Display', serif; }
 
@@ -211,18 +224,28 @@ export default function App() {
         }
       `}</style>
 
-      {/* Sticky WhatsApp (mobile) */}
-      <a href="https://wa.me/[PHONE]" className="sticky-wa wa-btn" style={{ padding: "13px 18px", fontSize: "0.9rem" }} target="_blank" rel="noopener noreferrer">
-        <WaIcon size={20} /> Book Now
-      </a>
+      {/* Floating WA button — desktop left side, visible when scrolled past hero */}
+      {scrolled && (
+        <a href="https://wa.me/[PHONE]" className="wa-float-left" target="_blank" rel="noopener noreferrer" aria-label="Book via WhatsApp">
+          <WaIcon size={20} />
+          <span>Book</span>
+        </a>
+      )}
 
       {/* Navigation */}
       <nav style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 100, background: scrolled ? "rgba(245,240,232,0.96)" : "rgba(20,40,10,0.55)", backdropFilter: "blur(10px)", borderBottom: scrolled ? "1px solid rgba(74,103,65,0.12)" : "1px solid rgba(255,255,255,0.1)", padding: "15px 32px", display: "flex", justifyContent: "space-between", alignItems: "center", transition: "background 0.4s, border-color 0.4s" }}>
-        <span style={{ fontFamily: "'Cormorant Garamond', serif", fontStyle: "italic", fontWeight: 500, color: scrolled ? "#1E3D0E" : "#fff", fontSize: "1.1rem", letterSpacing: "0.5px", transition: "color 0.4s" }}>Restore & Relax</span>
-        <div style={{ display: "flex", gap: "24px" }}>
-          <a href="#services" style={{ color: scrolled ? "#1E3D0E" : "#fff" }}>Services</a>
-          <a href="#coverage" style={{ color: scrolled ? "#1E3D0E" : "#fff" }}>Area</a>
-          <a href="#about" style={{ color: scrolled ? "#1E3D0E" : "#fff" }}>About</a>
+        <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+          {/* Mobile WA icon — top left in nav */}
+          <a href="https://wa.me/[PHONE]" className="wa-nav-icon" target="_blank" rel="noopener noreferrer" aria-label="Book via WhatsApp">
+            <WaIcon size={18} />
+          </a>
+          <span style={{ fontFamily: "'Cormorant Garamond', serif", fontStyle: "italic", fontWeight: 500, color: scrolled ? "#1E3D0E" : "#fff", fontSize: "1.1rem", letterSpacing: "0.5px", transition: "color 0.4s" }}>Restore & Relax</span>
+        </div>
+        <div style={{ display: "flex", gap: "20px", alignItems: "center" }}>
+          <a href="#services" className="nav-hide-sm" style={{ color: scrolled ? "#1E3D0E" : "#fff" }}>Services</a>
+          <a href="#coverage" className="nav-hide-sm" style={{ color: scrolled ? "#1E3D0E" : "#fff" }}>Area</a>
+          <a href="#reviews" className="nav-hide-sm" style={{ color: scrolled ? "#1E3D0E" : "#fff" }}>Reviews</a>
+          <a href="#about" className="nav-hide-sm" style={{ color: scrolled ? "#1E3D0E" : "#fff" }}>About</a>
           <a href="#book" style={{ color: scrolled ? "#1E3D0E" : "#fff" }}>Book</a>
         </div>
       </nav>
@@ -383,6 +406,8 @@ export default function App() {
         </div>
       </section>
 
+      <Reviews onPrivacyClick={() => setShowPrivacy(true)} />
+
       {/* ── BOOKING CTA ── */}
       <section id="book" style={{ padding: "96px 24px", background: "linear-gradient(140deg, #1E3D0E 0%, #2D5A1A 55%, #3A7022 100%)", textAlign: "center", position: "relative", overflow: "hidden" }}>
         <LeafDecor style={{ position: "absolute", top: "-10px", left: "-8px", width: "110px", color: "#fff", opacity: 0.06, transform: "rotate(-5deg)" }} />
@@ -413,6 +438,11 @@ export default function App() {
         </p>
         <p style={{ marginTop: "22px", fontSize: "0.78rem", color: "#444", fontFamily: "'Playfair Display', serif" }}>
           Mobile / Home Visits · Travel fees included
+        </p>
+        <p style={{ marginTop: "16px", fontSize: "0.75rem", color: "#555", fontFamily: "'Playfair Display', serif" }}>
+          <button onClick={() => setShowPrivacy(true)} style={{ background: "none", border: "none", color: "#7A9B70", cursor: "pointer", fontFamily: "'Playfair Display', serif", fontSize: "0.75rem", textDecoration: "underline", padding: 0 }}>
+            Privacy Policy
+          </button>
         </p>
       </footer>
     </div>
