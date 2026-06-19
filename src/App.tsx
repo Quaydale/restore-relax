@@ -4,6 +4,7 @@ import heroBg from "./assets/hero-bg.jpg";
 import CoverageMap from "./CoverageMap";
 import Reviews from "./Reviews";
 import PrivacyPolicy from "./PrivacyPolicy";
+import SeoHead from "./SeoHead";
 
 const services = [
   {
@@ -180,6 +181,7 @@ export default function App() {
 
   return (
     <div style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", backgroundColor: "#F5F0E8", minHeight: "100vh" }}>
+      <SeoHead />
       {activeInfo && <InfoModal service={activeInfo} onClose={closeModal} />}
       {showPrivacy && <PrivacyPolicy onClose={() => setShowPrivacy(false)} />}
       <style>{`
