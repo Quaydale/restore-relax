@@ -207,7 +207,7 @@ export default function App() {
         .wa-nav-icon { display: none; align-items: center; justify-content: center; background: #25D366; border-radius: 50%; width: 34px; height: 34px; flex-shrink: 0; }
         @media (max-width: 768px) { .wa-nav-icon { display: flex; } }
 
-        nav a { text-decoration: none; font-family: 'Playfair Display', serif; font-size: 0.85rem; letter-spacing: 1.5px; text-transform: uppercase; opacity: 0.85; transition: opacity 0.2s, color 0.4s; }
+        nav a { text-decoration: none; font-family: 'Cormorant Garamond', serif; font-size: 1rem; letter-spacing: 0.3px; opacity: 0.85; transition: opacity 0.2s, color 0.4s; }
         nav a:hover { opacity: 1; }
         @media (max-width: 520px) { .nav-hide-sm { display: none; } }
         @media (max-width: 400px) { nav { padding: 14px 16px; } }
