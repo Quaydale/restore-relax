@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import "./fonts/fonts.css";
 import heroBg from "./assets/hero-bg.jpg";
 import CoverageMap from "./CoverageMap";
+import Reviews from "./Reviews";
 
 const services = [
   {
@@ -222,6 +223,7 @@ export default function App() {
         <div style={{ display: "flex", gap: "24px" }}>
           <a href="#services" style={{ color: scrolled ? "#1E3D0E" : "#fff" }}>Services</a>
           <a href="#coverage" style={{ color: scrolled ? "#1E3D0E" : "#fff" }}>Area</a>
+          <a href="#reviews" style={{ color: scrolled ? "#1E3D0E" : "#fff" }}>Reviews</a>
           <a href="#about" style={{ color: scrolled ? "#1E3D0E" : "#fff" }}>About</a>
           <a href="#book" style={{ color: scrolled ? "#1E3D0E" : "#fff" }}>Book</a>
         </div>
@@ -382,6 +384,8 @@ export default function App() {
           </div>
         </div>
       </section>
+
+      <Reviews />
 
       {/* ── BOOKING CTA ── */}
       <section id="book" style={{ padding: "96px 24px", background: "linear-gradient(140deg, #1E3D0E 0%, #2D5A1A 55%, #3A7022 100%)", textAlign: "center", position: "relative", overflow: "hidden" }}>
