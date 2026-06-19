@@ -149,6 +149,13 @@ function useScrollAnimation() {
 export default function App() {
   useScrollAnimation();
   const [activeInfo, setActiveInfo] = useState<typeof services[0] | null>(null);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > window.innerHeight * 0.6);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   return (
     <div style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", backgroundColor: "#F5F0E8", minHeight: "100vh" }}>
@@ -169,7 +176,7 @@ export default function App() {
         .sticky-wa { position: fixed; bottom: 20px; right: 16px; z-index: 200; display: none; }
         @media (max-width: 768px) { .sticky-wa { display: flex; } }
 
-        nav a { color: #fff; text-decoration: none; font-family: 'Playfair Display', serif; font-size: 0.85rem; letter-spacing: 1.5px; text-transform: uppercase; opacity: 0.85; transition: opacity 0.2s; }
+        nav a { text-decoration: none; font-family: 'Playfair Display', serif; font-size: 0.85rem; letter-spacing: 1.5px; text-transform: uppercase; opacity: 0.85; transition: opacity 0.2s, color 0.4s; }
         nav a:hover { opacity: 1; }
 
         .price-pill { background: #EDE6D4; border: 1px solid rgba(139,105,20,0.2); padding: 6px 14px; border-radius: 50px; font-size: 0.9rem; color: #5C3D1E; font-family: 'Playfair Display', serif; }
@@ -191,12 +198,12 @@ export default function App() {
       </a>
 
       {/* Navigation */}
-      <nav style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 100, background: "rgba(20,40,10,0.55)", backdropFilter: "blur(10px)", borderBottom: "1px solid rgba(255,255,255,0.1)", padding: "15px 32px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-        <span style={{ fontFamily: "'Cormorant Garamond', serif", fontStyle: "italic", fontWeight: 500, color: "#fff", fontSize: "1.1rem", letterSpacing: "0.5px" }}>Restore & Relax</span>
+      <nav style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 100, background: scrolled ? "rgba(245,240,232,0.96)" : "rgba(20,40,10,0.55)", backdropFilter: "blur(10px)", borderBottom: scrolled ? "1px solid rgba(74,103,65,0.12)" : "1px solid rgba(255,255,255,0.1)", padding: "15px 32px", display: "flex", justifyContent: "space-between", alignItems: "center", transition: "background 0.4s, border-color 0.4s" }}>
+        <span style={{ fontFamily: "'Cormorant Garamond', serif", fontStyle: "italic", fontWeight: 500, color: scrolled ? "#1E3D0E" : "#fff", fontSize: "1.1rem", letterSpacing: "0.5px", transition: "color 0.4s" }}>Restore & Relax</span>
         <div style={{ display: "flex", gap: "24px" }}>
-          <a href="#services">Services</a>
-          <a href="#about">About</a>
-          <a href="#book">Book</a>
+          <a href="#services" style={{ color: scrolled ? "#1E3D0E" : "#fff" }}>Services</a>
+          <a href="#about" style={{ color: scrolled ? "#1E3D0E" : "#fff" }}>About</a>
+          <a href="#book" style={{ color: scrolled ? "#1E3D0E" : "#fff" }}>Book</a>
         </div>
       </nav>
 
@@ -252,8 +259,10 @@ export default function App() {
 
         {/* Scroll indicator */}
         <div style={{ position: "absolute", bottom: "28px", left: "50%", transform: "translateX(-50%)", textAlign: "center", opacity: 0.55, zIndex: 2 }}>
-          <p style={{ fontSize: "0.65rem", letterSpacing: "3px", color: "#fff", fontFamily: "'Playfair Display', serif", marginBottom: "6px" }}>SCROLL</p>
-          <svg width="14" height="22" viewBox="0 0 14 22" fill="none"><rect x="5" y="1" width="4" height="7" rx="2" stroke="#fff" strokeWidth="1.2"/><line x1="7" y1="12" x2="7" y2="20" stroke="#fff" strokeWidth="1.2"/><polyline points="3,17 7,21 11,17" stroke="#fff" strokeWidth="1.2" fill="none"/></svg>
+          <p style={{ fontSize: "0.65rem", letterSpacing: "3px", color: "#fff", fontFamily: "'Playfair Display', serif", marginBottom: "8px" }}>SCROLL</p>
+          <svg width="18" height="10" viewBox="0 0 18 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <polyline points="1,1 9,9 17,1" stroke="#fff" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
+          </svg>
         </div>
       </section>
 
