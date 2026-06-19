@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import "./fonts/fonts.css";
-import heroBg from "./assets/hero-bg.jpg";
+import "./hero.css";
 import CoverageMap from "./CoverageMap";
 import Reviews from "./Reviews";
 import PrivacyPolicy from "./PrivacyPolicy";
@@ -251,7 +251,7 @@ export default function App() {
       </nav>
 
       {/* ── HERO ── */}
-      <section style={{ minHeight: "100vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", position: "relative", overflow: "hidden", paddingTop: "80px", paddingBottom: "60px", backgroundImage: `url(${heroBg})`, backgroundSize: "cover", backgroundPosition: "center 30%" }}>
+      <section className="hero-section" style={{ minHeight: "100vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", position: "relative", overflow: "hidden", paddingTop: "80px", paddingBottom: "60px", backgroundSize: "cover", backgroundPosition: "center 30%" }}>
         {/* Dark green overlay */}
         <div style={{ position: "absolute", inset: 0, background: "linear-gradient(160deg, rgba(20,45,10,0.72) 0%, rgba(30,61,14,0.65) 50%, rgba(45,80,20,0.60) 100%)", zIndex: 0 }} />
         <LeafDecor style={{ position: "absolute", top: "60px", left: "12px", width: "80px", color: "#fff", opacity: 0.18, zIndex: 1 }} />
