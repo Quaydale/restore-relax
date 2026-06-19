@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import "./fonts/fonts.css";
 import heroBg from "./assets/hero-bg.jpg";
 
@@ -68,21 +68,34 @@ const services = [
 type ServiceInfo = { origin: string; history: string; benefits: string[] };
 
 const InfoModal = ({ service, onClose }: { service: { name: string; info: ServiceInfo }; onClose: () => void }) => {
+  const headingId = `modal-title-${service.name.replace(/\s+/g, "-").toLowerCase()}`;
+  const closeRef = useRef<HTMLButtonElement>(null);
+
   useEffect(() => {
+    // Move focus into modal and lock body scroll
+    closeRef.current?.focus();
+    document.body.style.overflow = "hidden";
     const handler = (e: KeyboardEvent) => e.key === "Escape" && onClose();
     document.addEventListener("keydown", handler);
-    document.body.style.overflow = "hidden";
-    return () => { document.removeEventListener("keydown", handler); document.body.style.overflow = ""; };
-  }, [onClose]);
+    return () => {
+      document.removeEventListener("keydown", handler);
+      document.body.style.overflow = "";
+    };
+  }, []); // onClose is stable via useCallback in parent
 
   return (
-    <div onClick={onClose} style={{ position: "fixed", inset: 0, zIndex: 500, background: "rgba(10,25,5,0.7)", backdropFilter: "blur(4px)", display: "flex", alignItems: "center", justifyContent: "center", padding: "20px" }}>
+    <div
+      onClick={onClose}
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby={headingId}
+      style={{ position: "fixed", inset: 0, zIndex: 500, background: "rgba(10,25,5,0.7)", backdropFilter: "blur(4px)", display: "flex", alignItems: "center", justifyContent: "center", padding: "20px" }}
+    >
       <div onClick={e => e.stopPropagation()} style={{ background: "#fff", maxWidth: "560px", width: "100%", maxHeight: "85vh", overflowY: "auto", borderRadius: "3px", padding: "44px 40px", position: "relative", boxShadow: "0 24px 80px rgba(0,0,0,0.25)" }}>
-        {/* Close */}
-        <button onClick={onClose} style={{ position: "absolute", top: "16px", right: "16px", background: "none", border: "none", cursor: "pointer", color: "#7A6B58", fontSize: "1.4rem", lineHeight: 1, padding: "4px 8px" }} aria-label="Close">×</button>
+        <button ref={closeRef} onClick={onClose} style={{ position: "absolute", top: "12px", right: "12px", background: "none", border: "none", cursor: "pointer", color: "#7A6B58", fontSize: "1.4rem", lineHeight: 1, padding: "8px 12px", minWidth: "44px", minHeight: "44px" }} aria-label="Close dialog">×</button>
 
         <div style={{ width: "24px", height: "1px", background: "#C4A45A", marginBottom: "16px" }} />
-        <h3 style={{ fontFamily: "'Playfair Display', serif", fontSize: "1.4rem", color: "#1E3D0E", fontWeight: 500, marginBottom: "24px" }}>{service.name}</h3>
+        <h3 id={headingId} style={{ fontFamily: "'Playfair Display', serif", fontSize: "1.4rem", color: "#1E3D0E", fontWeight: 500, marginBottom: "24px" }}>{service.name}</h3>
 
         <p style={{ fontSize: "0.7rem", letterSpacing: "3px", color: "#8B6914", fontFamily: "'Playfair Display', serif", textTransform: "uppercase", marginBottom: "8px" }}>Origin</p>
         <p style={{ fontSize: "1rem", color: "#5C3D1E", lineHeight: 1.75, fontFamily: "'Cormorant Garamond', serif", fontWeight: 300, marginBottom: "24px" }}>{service.info.origin}</p>
@@ -92,8 +105,8 @@ const InfoModal = ({ service, onClose }: { service: { name: string; info: Servic
 
         <p style={{ fontSize: "0.7rem", letterSpacing: "3px", color: "#8B6914", fontFamily: "'Playfair Display', serif", textTransform: "uppercase", marginBottom: "12px" }}>Benefits</p>
         <ul style={{ paddingLeft: 0, listStyle: "none", display: "flex", flexDirection: "column", gap: "8px" }}>
-          {service.info.benefits.map(b => (
-            <li key={b} style={{ display: "flex", alignItems: "flex-start", gap: "10px", fontSize: "1rem", color: "#5C3D1E", lineHeight: 1.7, fontFamily: "'Cormorant Garamond', serif", fontWeight: 300 }}>
+          {service.info.benefits.map((b, i) => (
+            <li key={i} style={{ display: "flex", alignItems: "flex-start", gap: "10px", fontSize: "1rem", color: "#5C3D1E", lineHeight: 1.7, fontFamily: "'Cormorant Garamond', serif", fontWeight: 300 }}>
               <span style={{ color: "#C4A45A", marginTop: "2px", flexShrink: 0 }}>—</span>{b}
             </li>
           ))}
@@ -150,16 +163,20 @@ export default function App() {
   useScrollAnimation();
   const [activeInfo, setActiveInfo] = useState<typeof services[0] | null>(null);
   const [scrolled, setScrolled] = useState(false);
+  const closeModal = useCallback(() => setActiveInfo(null), []);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > window.innerHeight * 0.6);
+    const onScroll = () => {
+      const next = window.scrollY > window.innerHeight * 0.6;
+      setScrolled(prev => prev === next ? prev : next);
+    };
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
   return (
     <div style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", backgroundColor: "#F5F0E8", minHeight: "100vh" }}>
-      {activeInfo && <InfoModal service={activeInfo} onClose={() => setActiveInfo(null)} />}
+      {activeInfo && <InfoModal service={activeInfo} onClose={closeModal} />}
       <style>{`
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
         html { scroll-behavior: smooth; }
@@ -183,7 +200,8 @@ export default function App() {
 
         .grid-services { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 24px; }
 
-        .info-btn { background: none; border: 1.5px solid #C4A45A; color: #C4A45A; border-radius: 50%; width: 20px; height: 20px; font-size: 0.7rem; font-family: 'Playfair Display', serif; font-style: italic; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; transition: background 0.2s, color 0.2s; vertical-align: middle; padding: 0; line-height: 1; }
+        .info-btn { background: none; border: 1.5px solid #C4A45A; color: #C4A45A; border-radius: 50%; width: 20px; height: 20px; font-size: 0.7rem; font-family: 'Playfair Display', serif; font-style: italic; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; transition: background 0.2s, color 0.2s; vertical-align: middle; padding: 0; line-height: 1; position: relative; }
+        .info-btn::before { content: ''; position: absolute; inset: -12px; border-radius: 50%; }
         .info-btn:hover { background: #C4A45A; color: #fff; }
 
         @media (max-width: 600px) {
