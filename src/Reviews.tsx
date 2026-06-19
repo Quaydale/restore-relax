@@ -48,16 +48,18 @@ function StarRating({ value, onChange }: { value: number; onChange?: (v: number)
 
 // ── Review form ──────────────────────────────────────────────────────────────
 
-function ReviewForm({ onSubmitted }: { onSubmitted: () => void }) {
+function ReviewForm({ onSubmitted, onPrivacyClick }: { onSubmitted: () => void; onPrivacyClick: () => void }) {
   const [name, setName] = useState("");
   const [rating, setRating] = useState(0);
   const [body, setBody] = useState("");
+  const [consent, setConsent] = useState(false);
   const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
   const [errorMsg, setErrorMsg] = useState("");
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (rating === 0) { setErrorMsg("Please choose a star rating."); return; }
+    if (!consent) { setErrorMsg("Please confirm you have read the privacy policy."); return; }
     setStatus("submitting");
     setErrorMsg("");
     const { error } = await supabase.from("reviews").insert({ name: name.trim(), rating, body: body.trim() });
@@ -116,6 +118,20 @@ function ReviewForm({ onSubmitted }: { onSubmitted: () => void }) {
         />
         <p style={{ fontSize: "0.75rem", color: "#aaa", textAlign: "right", marginTop: "4px" }}>{body.length}/500</p>
       </div>
+      <label style={{ display: "flex", alignItems: "flex-start", gap: "10px", cursor: "pointer" }}>
+        <input
+          type="checkbox"
+          checked={consent}
+          onChange={e => setConsent(e.target.checked)}
+          style={{ marginTop: "3px", accentColor: "#1E3D0E", width: "16px", height: "16px", flexShrink: 0 }}
+        />
+        <span style={{ fontSize: "0.9rem", color: "#7A6B58", lineHeight: 1.6, fontFamily: "'Cormorant Garamond', serif" }}>
+          I agree that my name, rating and review may be displayed publicly on this website in accordance with the{" "}
+          <button type="button" onClick={onPrivacyClick} style={{ background: "none", border: "none", color: "#4A6741", cursor: "pointer", fontFamily: "'Cormorant Garamond', serif", fontSize: "0.9rem", textDecoration: "underline", padding: 0 }}>
+            Privacy Policy
+          </button>.
+        </span>
+      </label>
       {errorMsg && <p style={{ fontSize: "0.9rem", color: "#c0392b", fontStyle: "italic" }}>{errorMsg}</p>}
       <button
         type="submit"
@@ -148,7 +164,7 @@ function ReviewCard({ review }: { review: Review }) {
 
 // ── Main export ──────────────────────────────────────────────────────────────
 
-export default function Reviews() {
+export default function Reviews({ onPrivacyClick }: { onPrivacyClick: () => void }) {
   const [reviews, setReviews] = useState<Review[]>([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
@@ -214,7 +230,7 @@ export default function Reviews() {
           </button>
           {showForm && (
             <div style={{ marginTop: "28px" }}>
-              <ReviewForm onSubmitted={() => { load(); }} />
+              <ReviewForm onSubmitted={() => { load(); }} onPrivacyClick={onPrivacyClick} />
             </div>
           )}
         </div>

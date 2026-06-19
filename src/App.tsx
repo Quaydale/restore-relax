@@ -3,6 +3,7 @@ import "./fonts/fonts.css";
 import heroBg from "./assets/hero-bg.jpg";
 import CoverageMap from "./CoverageMap";
 import Reviews from "./Reviews";
+import PrivacyPolicy from "./PrivacyPolicy";
 
 const services = [
   {
@@ -164,6 +165,7 @@ function useScrollAnimation() {
 export default function App() {
   useScrollAnimation();
   const [activeInfo, setActiveInfo] = useState<typeof services[0] | null>(null);
+  const [showPrivacy, setShowPrivacy] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const closeModal = useCallback(() => setActiveInfo(null), []);
 
@@ -179,6 +181,7 @@ export default function App() {
   return (
     <div style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", backgroundColor: "#F5F0E8", minHeight: "100vh" }}>
       {activeInfo && <InfoModal service={activeInfo} onClose={closeModal} />}
+      {showPrivacy && <PrivacyPolicy onClose={() => setShowPrivacy(false)} />}
       <style>{`
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
         html { scroll-behavior: smooth; }
@@ -387,7 +390,7 @@ export default function App() {
         </div>
       </section>
 
-      <Reviews />
+      <Reviews onPrivacyClick={() => setShowPrivacy(true)} />
 
       {/* ── BOOKING CTA ── */}
       <section id="book" style={{ padding: "96px 24px", background: "linear-gradient(140deg, #1E3D0E 0%, #2D5A1A 55%, #3A7022 100%)", textAlign: "center", position: "relative", overflow: "hidden" }}>
@@ -419,6 +422,11 @@ export default function App() {
         </p>
         <p style={{ marginTop: "22px", fontSize: "0.78rem", color: "#444", fontFamily: "'Playfair Display', serif" }}>
           Mobile / Home Visits · Travel fees included
+        </p>
+        <p style={{ marginTop: "16px", fontSize: "0.75rem", color: "#555", fontFamily: "'Playfair Display', serif" }}>
+          <button onClick={() => setShowPrivacy(true)} style={{ background: "none", border: "none", color: "#7A9B70", cursor: "pointer", fontFamily: "'Playfair Display', serif", fontSize: "0.75rem", textDecoration: "underline", padding: 0 }}>
+            Privacy Policy
+          </button>
         </p>
       </footer>
     </div>
