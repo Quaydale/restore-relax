@@ -234,19 +234,17 @@ export default function App() {
 
       {/* Navigation */}
       <nav style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 100, background: scrolled ? "rgba(245,240,232,0.96)" : "rgba(20,40,10,0.55)", backdropFilter: "blur(10px)", borderBottom: scrolled ? "1px solid rgba(74,103,65,0.12)" : "1px solid rgba(255,255,255,0.1)", padding: "15px 32px", display: "flex", justifyContent: "space-between", alignItems: "center", transition: "background 0.4s, border-color 0.4s" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-          {/* Mobile WA icon — top left in nav */}
-          <a href="https://wa.me/[PHONE]" className="wa-nav-icon" target="_blank" rel="noopener noreferrer" aria-label="Book via WhatsApp">
-            <WaIcon size={18} />
-          </a>
-          <span style={{ fontFamily: "'Cormorant Garamond', serif", fontStyle: "italic", fontWeight: 500, color: scrolled ? "#1E3D0E" : "#fff", fontSize: "1.1rem", letterSpacing: "0.5px", transition: "color 0.4s" }}>Restore & Relax</span>
-        </div>
+        <span style={{ fontFamily: "'Cormorant Garamond', serif", fontStyle: "italic", fontWeight: 500, color: scrolled ? "#1E3D0E" : "#fff", fontSize: "1.1rem", letterSpacing: "0.5px", transition: "color 0.4s" }}>Restore & Relax</span>
         <div style={{ display: "flex", gap: "20px", alignItems: "center" }}>
           <a href="#services" className="nav-hide-sm" style={{ color: scrolled ? "#1E3D0E" : "#fff" }}>Services</a>
           <a href="#coverage" className="nav-hide-sm" style={{ color: scrolled ? "#1E3D0E" : "#fff" }}>Area</a>
           <a href="#reviews" className="nav-hide-sm" style={{ color: scrolled ? "#1E3D0E" : "#fff" }}>Reviews</a>
           <a href="#about" className="nav-hide-sm" style={{ color: scrolled ? "#1E3D0E" : "#fff" }}>About</a>
-          <a href="#book" style={{ color: scrolled ? "#1E3D0E" : "#fff" }}>Book</a>
+          {/* Desktop: text link. Mobile: WA icon */}
+          <a href="#book" className="nav-hide-sm" style={{ color: scrolled ? "#1E3D0E" : "#fff" }}>Book</a>
+          <a href="https://wa.me/[PHONE]" className="wa-nav-icon" target="_blank" rel="noopener noreferrer" aria-label="Book via WhatsApp">
+            <WaIcon size={18} />
+          </a>
         </div>
       </nav>
 
