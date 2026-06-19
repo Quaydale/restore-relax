@@ -197,6 +197,8 @@ export default function App() {
 
         nav a { text-decoration: none; font-family: 'Playfair Display', serif; font-size: 0.85rem; letter-spacing: 1.5px; text-transform: uppercase; opacity: 0.85; transition: opacity 0.2s, color 0.4s; }
         nav a:hover { opacity: 1; }
+        @media (max-width: 520px) { .nav-hide-sm { display: none; } }
+        @media (max-width: 400px) { nav { padding: 14px 16px; } }
 
         .price-pill { background: #EDE6D4; border: 1px solid rgba(139,105,20,0.2); padding: 6px 14px; border-radius: 50px; font-size: 0.9rem; color: #5C3D1E; font-family: 'Playfair Display', serif; }
 
@@ -220,11 +222,11 @@ export default function App() {
       {/* Navigation */}
       <nav style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 100, background: scrolled ? "rgba(245,240,232,0.96)" : "rgba(20,40,10,0.55)", backdropFilter: "blur(10px)", borderBottom: scrolled ? "1px solid rgba(74,103,65,0.12)" : "1px solid rgba(255,255,255,0.1)", padding: "15px 32px", display: "flex", justifyContent: "space-between", alignItems: "center", transition: "background 0.4s, border-color 0.4s" }}>
         <span style={{ fontFamily: "'Cormorant Garamond', serif", fontStyle: "italic", fontWeight: 500, color: scrolled ? "#1E3D0E" : "#fff", fontSize: "1.1rem", letterSpacing: "0.5px", transition: "color 0.4s" }}>Restore & Relax</span>
-        <div style={{ display: "flex", gap: "24px" }}>
-          <a href="#services" style={{ color: scrolled ? "#1E3D0E" : "#fff" }}>Services</a>
-          <a href="#coverage" style={{ color: scrolled ? "#1E3D0E" : "#fff" }}>Area</a>
-          <a href="#reviews" style={{ color: scrolled ? "#1E3D0E" : "#fff" }}>Reviews</a>
-          <a href="#about" style={{ color: scrolled ? "#1E3D0E" : "#fff" }}>About</a>
+        <div style={{ display: "flex", gap: "20px", alignItems: "center" }}>
+          <a href="#services" className="nav-hide-sm" style={{ color: scrolled ? "#1E3D0E" : "#fff" }}>Services</a>
+          <a href="#coverage" className="nav-hide-sm" style={{ color: scrolled ? "#1E3D0E" : "#fff" }}>Area</a>
+          <a href="#reviews" className="nav-hide-sm" style={{ color: scrolled ? "#1E3D0E" : "#fff" }}>Reviews</a>
+          <a href="#about" className="nav-hide-sm" style={{ color: scrolled ? "#1E3D0E" : "#fff" }}>About</a>
           <a href="#book" style={{ color: scrolled ? "#1E3D0E" : "#fff" }}>Book</a>
         </div>
       </nav>
