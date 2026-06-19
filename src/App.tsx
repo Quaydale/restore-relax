@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import "./fonts/fonts.css";
+import heroBg from "./assets/hero-bg.jpg";
 
 const services = [
   {
@@ -98,7 +99,7 @@ export default function App() {
         .sticky-wa { position: fixed; bottom: 20px; right: 16px; z-index: 200; display: none; }
         @media (max-width: 768px) { .sticky-wa { display: flex; } }
 
-        nav a { color: #1E3D0E; text-decoration: none; font-family: 'Playfair Display', serif; font-size: 0.85rem; letter-spacing: 1.5px; text-transform: uppercase; opacity: 0.75; transition: opacity 0.2s; }
+        nav a { color: #fff; text-decoration: none; font-family: 'Playfair Display', serif; font-size: 0.85rem; letter-spacing: 1.5px; text-transform: uppercase; opacity: 0.85; transition: opacity 0.2s; }
         nav a:hover { opacity: 1; }
 
         .price-pill { background: #EDE6D4; border: 1px solid rgba(139,105,20,0.2); padding: 6px 14px; border-radius: 50px; font-size: 0.9rem; color: #5C3D1E; font-family: 'Playfair Display', serif; }
@@ -117,8 +118,8 @@ export default function App() {
       </a>
 
       {/* Navigation */}
-      <nav style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 100, background: "rgba(245,240,232,0.93)", backdropFilter: "blur(10px)", borderBottom: "1px solid rgba(74,103,65,0.12)", padding: "15px 32px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-        <span style={{ fontFamily: "'Cormorant Garamond', serif", fontStyle: "italic", fontWeight: 500, color: "#1E3D0E", fontSize: "1.1rem", letterSpacing: "0.5px" }}>Restore & Relax</span>
+      <nav style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 100, background: "rgba(20,40,10,0.55)", backdropFilter: "blur(10px)", borderBottom: "1px solid rgba(255,255,255,0.1)", padding: "15px 32px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <span style={{ fontFamily: "'Cormorant Garamond', serif", fontStyle: "italic", fontWeight: 500, color: "#fff", fontSize: "1.1rem", letterSpacing: "0.5px" }}>Restore & Relax</span>
         <div style={{ display: "flex", gap: "24px" }}>
           <a href="#services">Services</a>
           <a href="#about">About</a>
@@ -127,42 +128,44 @@ export default function App() {
       </nav>
 
       {/* ── HERO ── */}
-      <section style={{ minHeight: "100vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", background: "linear-gradient(155deg, #E4EDE0 0%, #F5F0E8 50%, #EDE6D4 100%)", position: "relative", overflow: "hidden", paddingTop: "80px", paddingBottom: "60px" }}>
-        <LeafDecor style={{ position: "absolute", top: "60px", left: "12px", width: "80px", color: "#7A9B70", opacity: 0.6 }} />
-        <LeafDecor style={{ position: "absolute", bottom: "60px", right: "12px", width: "80px", color: "#7A9B70", opacity: 0.6, transform: "scaleX(-1) rotate(15deg)" }} />
-        <LeafDecor style={{ position: "absolute", top: "25%", right: "6%", width: "52px", color: "#4A6741", opacity: 0.35, transform: "rotate(25deg)" }} />
-        <LeafDecor style={{ position: "absolute", bottom: "25%", left: "6%", width: "52px", color: "#4A6741", opacity: 0.35, transform: "scaleX(-1) rotate(-15deg)" }} />
+      <section style={{ minHeight: "100vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", position: "relative", overflow: "hidden", paddingTop: "80px", paddingBottom: "60px", backgroundImage: `url(${heroBg})`, backgroundSize: "cover", backgroundPosition: "center 30%" }}>
+        {/* Dark green overlay */}
+        <div style={{ position: "absolute", inset: 0, background: "linear-gradient(160deg, rgba(20,45,10,0.72) 0%, rgba(30,61,14,0.65) 50%, rgba(45,80,20,0.60) 100%)", zIndex: 0 }} />
+        <LeafDecor style={{ position: "absolute", top: "60px", left: "12px", width: "80px", color: "#fff", opacity: 0.18, zIndex: 1 }} />
+        <LeafDecor style={{ position: "absolute", bottom: "60px", right: "12px", width: "80px", color: "#fff", opacity: 0.18, transform: "scaleX(-1) rotate(15deg)", zIndex: 1 }} />
+        <LeafDecor style={{ position: "absolute", top: "25%", right: "6%", width: "52px", color: "#fff", opacity: 0.12, transform: "rotate(25deg)", zIndex: 1 }} />
+        <LeafDecor style={{ position: "absolute", bottom: "25%", left: "6%", width: "52px", color: "#fff", opacity: 0.12, transform: "scaleX(-1) rotate(-15deg)", zIndex: 1 }} />
 
-        <div style={{ textAlign: "center", position: "relative", padding: "0 20px" }}>
+        <div style={{ textAlign: "center", position: "relative", padding: "0 20px", zIndex: 2 }}>
           {/* Arc "MASSAGE THERAPY" */}
           <svg viewBox="0 0 300 75" style={{ width: "270px", display: "block", margin: "0 auto -4px" }}>
             <defs>
               <path id="topArc" d="M 28,68 A 122,122 0 0,1 272,68" />
             </defs>
             <text>
-              <textPath href="#topArc" startOffset="50%" textAnchor="middle" style={{ fontFamily: "'Playfair Display', serif", fontSize: "11.5px", letterSpacing: "7px", fill: "#1E3D0E" }}>
+              <textPath href="#topArc" startOffset="50%" textAnchor="middle" style={{ fontFamily: "'Playfair Display', serif", fontSize: "11.5px", letterSpacing: "7px", fill: "#E8F0E4" }}>
                 MASSAGE THERAPY
               </textPath>
             </text>
           </svg>
 
           {/* Lotus */}
-          <LotusIcon size={116} color="#1E3D0E" />
+          <LotusIcon size={116} color="#C4A45A" />
 
           {/* Brand name */}
-          <h1 className="hero-name" style={{ fontFamily: "'Cormorant Garamond', serif", fontStyle: "italic", fontWeight: 300, fontSize: "3.8rem", color: "#1E3D0E", lineHeight: 1.1, marginTop: "2px" }}>
+          <h1 className="hero-name" style={{ fontFamily: "'Cormorant Garamond', serif", fontStyle: "italic", fontWeight: 300, fontSize: "3.8rem", color: "#fff", lineHeight: 1.1, marginTop: "2px" }}>
             Restore & Relax
           </h1>
 
           {/* by Iulia */}
-          <p style={{ marginTop: "14px", fontFamily: "'Playfair Display', serif", fontSize: "0.9rem", letterSpacing: "3px", color: "#8B6914" }}>
+          <p style={{ marginTop: "14px", fontFamily: "'Playfair Display', serif", fontSize: "0.9rem", letterSpacing: "3px", color: "#C4A45A" }}>
             <svg viewBox="0 0 40 4" width="40" height="4" style={{ display: "inline-block", verticalAlign: "middle", marginRight: "12px" }}><line x1="0" y1="2" x2="40" y2="2" stroke="#C4A45A" strokeWidth="1"/></svg>
             by Iulia
             <svg viewBox="0 0 40 4" width="40" height="4" style={{ display: "inline-block", verticalAlign: "middle", marginLeft: "12px" }}><line x1="0" y1="2" x2="40" y2="2" stroke="#C4A45A" strokeWidth="1"/></svg>
           </p>
 
           {/* Tagline */}
-          <p style={{ marginTop: "28px", fontSize: "1.15rem", color: "#4A6741", fontStyle: "italic", maxWidth: "360px", margin: "28px auto 0", lineHeight: 1.75 }}>
+          <p style={{ marginTop: "28px", fontSize: "1.15rem", color: "rgba(255,255,255,0.82)", fontStyle: "italic", maxWidth: "360px", margin: "28px auto 0", lineHeight: 1.75 }}>
             Professional massage therapy, delivered to your door.
           </p>
 
@@ -175,9 +178,9 @@ export default function App() {
         </div>
 
         {/* Scroll indicator */}
-        <div style={{ position: "absolute", bottom: "28px", left: "50%", transform: "translateX(-50%)", textAlign: "center", opacity: 0.45 }}>
-          <p style={{ fontSize: "0.65rem", letterSpacing: "3px", color: "#4A6741", fontFamily: "'Playfair Display', serif", marginBottom: "6px" }}>SCROLL</p>
-          <svg width="14" height="22" viewBox="0 0 14 22" fill="none"><rect x="5" y="1" width="4" height="7" rx="2" stroke="#4A6741" strokeWidth="1.2"/><line x1="7" y1="12" x2="7" y2="20" stroke="#4A6741" strokeWidth="1.2"/><polyline points="3,17 7,21 11,17" stroke="#4A6741" strokeWidth="1.2" fill="none"/></svg>
+        <div style={{ position: "absolute", bottom: "28px", left: "50%", transform: "translateX(-50%)", textAlign: "center", opacity: 0.55, zIndex: 2 }}>
+          <p style={{ fontSize: "0.65rem", letterSpacing: "3px", color: "#fff", fontFamily: "'Playfair Display', serif", marginBottom: "6px" }}>SCROLL</p>
+          <svg width="14" height="22" viewBox="0 0 14 22" fill="none"><rect x="5" y="1" width="4" height="7" rx="2" stroke="#fff" strokeWidth="1.2"/><line x1="7" y1="12" x2="7" y2="20" stroke="#fff" strokeWidth="1.2"/><polyline points="3,17 7,21 11,17" stroke="#fff" strokeWidth="1.2" fill="none"/></svg>
         </div>
       </section>
 
