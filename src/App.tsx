@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import "./fonts/fonts.css";
 import heroBg from "./assets/hero-bg.jpg";
+import CoverageMap from "./CoverageMap";
 
 const services = [
   {
@@ -220,6 +221,7 @@ export default function App() {
         <span style={{ fontFamily: "'Cormorant Garamond', serif", fontStyle: "italic", fontWeight: 500, color: scrolled ? "#1E3D0E" : "#fff", fontSize: "1.1rem", letterSpacing: "0.5px", transition: "color 0.4s" }}>Restore & Relax</span>
         <div style={{ display: "flex", gap: "24px" }}>
           <a href="#services" style={{ color: scrolled ? "#1E3D0E" : "#fff" }}>Services</a>
+          <a href="#coverage" style={{ color: scrolled ? "#1E3D0E" : "#fff" }}>Area</a>
           <a href="#about" style={{ color: scrolled ? "#1E3D0E" : "#fff" }}>About</a>
           <a href="#book" style={{ color: scrolled ? "#1E3D0E" : "#fff" }}>Book</a>
         </div>
@@ -345,6 +347,38 @@ export default function App() {
             <p style={{ fontSize: "1rem", color: "#5C3D1E", fontStyle: "italic" }}>
               <strong style={{ fontStyle: "normal", fontFamily: "'Playfair Display', serif", color: "#1E3D0E" }}>Mobile / Home Visits</strong> — Travel fees are included in all treatment prices.
             </p>
+          </div>
+        </div>
+      </section>
+
+      {/* ── COVERAGE AREA ── */}
+      <section id="coverage" style={{ padding: "88px 24px", background: "#fff" }}>
+        <div style={{ maxWidth: "1080px", margin: "0 auto" }}>
+          <div style={{ textAlign: "center", marginBottom: "48px" }} className="fade-up">
+            <p style={{ fontSize: "0.7rem", letterSpacing: "4px", color: "#8B6914", fontFamily: "'Playfair Display', serif", marginBottom: "16px", textTransform: "uppercase" }}>Where I Work</p>
+            <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontStyle: "italic", fontWeight: 300, fontSize: "clamp(1.9rem, 5vw, 2.7rem)", color: "#1E3D0E" }}>
+              Coverage Area
+            </h2>
+            <div style={{ width: "36px", height: "1px", background: "#C4A45A", margin: "18px auto 24px" }} />
+            <p style={{ fontSize: "1.1rem", color: "#5C3D1E", lineHeight: 1.85, fontWeight: 300, maxWidth: "620px", margin: "0 auto" }}>
+              Based in <strong style={{ fontWeight: 500, color: "#1E3D0E" }}>Woking</strong>, I cover a 10 mile radius bringing professional massage therapy directly to your home. Whether you're in Guildford, Camberley, Weybridge, Cobham, Leatherhead, Byfleet or the surrounding villages — I come to you.
+            </p>
+            <p style={{ fontSize: "1rem", color: "#7A6B58", lineHeight: 1.8, fontWeight: 300, maxWidth: "560px", margin: "16px auto 0", fontStyle: "italic" }}>
+              Not sure if you're in range? Just send me a message on WhatsApp and I'll confirm.
+            </p>
+          </div>
+
+          <div className="fade-up" style={{ borderRadius: "3px", overflow: "hidden", border: "1px solid rgba(74,103,65,0.15)", boxShadow: "0 4px 24px rgba(30,61,14,0.08)" }}>
+            <CoverageMap />
+          </div>
+
+          {/* Town chips */}
+          <div className="fade-up" style={{ marginTop: "32px", display: "flex", flexWrap: "wrap", gap: "10px", justifyContent: "center" }}>
+            {["Woking", "Guildford", "Camberley", "Weybridge", "Cobham", "Leatherhead", "Byfleet", "West Byfleet", "Farnborough", "Aldershot", "Fleet", "Send", "Ripley", "Pyrford"].map(town => (
+              <span key={town} style={{ background: "#EDE6D4", border: "1px solid rgba(139,105,20,0.2)", padding: "6px 16px", borderRadius: "50px", fontSize: "0.85rem", color: "#5C3D1E", fontFamily: "'Playfair Display', serif" }}>
+                {town}
+              </span>
+            ))}
           </div>
         </div>
       </section>
