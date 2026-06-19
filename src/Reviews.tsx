@@ -173,6 +173,7 @@ export default function Reviews({ onPrivacyClick }: { onPrivacyClick: () => void
     const { data } = await supabase
       .from("reviews")
       .select("*")
+      .eq("approved", true)
       .order("created_at", { ascending: false });
     setReviews(data ?? []);
     setLoading(false);
