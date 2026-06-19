@@ -1,38 +1,107 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import "./fonts/fonts.css";
+import heroBg from "./assets/hero-bg.jpg";
 
 const services = [
   {
     name: "Sports Massage",
     description: "Targeted therapy to aid recovery, prevent injury and enhance athletic performance.",
     prices: [{ duration: "60 min", price: "£70" }, { duration: "90 min", price: "£100" }],
+    info: {
+      origin: "Early 20th century, popularised during the 1970s running boom in the United States and Europe.",
+      history: "Rooted in Swedish massage techniques, sports massage was refined by coaches and physiotherapists working alongside competitive athletes. It gained mainstream recognition at the 1984 Los Angeles Olympics, where it was offered to athletes for the first time at an official Games.",
+      benefits: ["Reduces post-exercise muscle soreness", "Helps prevent soft tissue injuries", "Improves flexibility and range of motion", "Speeds recovery between training sessions", "Reduces anxiety and mental fatigue"],
+    },
   },
   {
     name: "Deep Tissue",
     description: "Firm pressure reaching deeper muscle layers to release chronic tension and knots.",
     prices: [{ duration: "60 min", price: "£70" }, { duration: "90 min", price: "£100" }],
+    info: {
+      origin: "Formalised in North America during the 1970s, building on ancient deep-pressure healing traditions found across many cultures.",
+      history: "Canadian physiotherapist Therese Pfrimmer is credited with developing one of the first structured deep tissue techniques after using it to recover from her own partial paralysis in the 1940s. The modern form draws on earlier practices from ancient Egypt, Greece and China where deep manual pressure was used to treat pain.",
+      benefits: ["Breaks down scar tissue and adhesions", "Relieves chronic muscle tension and pain", "Lowers blood pressure and heart rate", "Reduces stress hormone levels", "Supports rehabilitation after injury"],
+    },
   },
   {
     name: "Swedish Massage",
     description: "Classic full-body relaxation massage using long, flowing strokes to calm the nervous system.",
     prices: [{ duration: "60 min", price: "£70" }, { duration: "90 min", price: "£100" }],
+    info: {
+      origin: "Sweden, early 19th century.",
+      history: "Developed by Swedish physiologist Pehr Henrik Ling in the 1820s, who synthesised techniques from Chinese, Egyptian, Greek and Roman healing traditions into a unified system. His 'Medical Gymnastics' laid the foundation for what became the most widely practised massage form in the Western world. It was introduced to the United States in the 1850s and has remained the cornerstone of modern massage therapy ever since.",
+      benefits: ["Promotes deep relaxation and stress relief", "Improves blood and lymphatic circulation", "Eases muscle tension and stiffness", "Boosts mood by releasing endorphins", "Supports better sleep quality"],
+    },
   },
   {
     name: "Pregnancy Massage",
     description: "Gentle, nurturing massage tailored to support mothers-to-be through every trimester.",
     prices: [{ duration: "60 min", price: "£70" }],
+    info: {
+      origin: "Ancient traditions across Egypt, China and India; formalised as a Western practice in the 1980s.",
+      history: "Massage during pregnancy has been documented in ancient Egyptian and Chinese texts. In the West, therapist Carole Osborne pioneered dedicated prenatal massage training in the 1980s, establishing the safety protocols and positioning techniques still used today. Research over the past 30 years has confirmed meaningful benefits for both mother and baby.",
+      benefits: ["Relieves lower back, hip and sciatic pain", "Reduces swelling in hands and feet", "Lowers levels of stress hormones", "Improves sleep quality", "May support shorter, easier labour"],
+    },
   },
   {
     name: "Manual Lymphatic Drainage",
     description: "Light, rhythmic techniques to stimulate lymph flow, reduce swelling and support immunity.",
     prices: [{ duration: "60 min", price: "£70" }],
+    info: {
+      origin: "France, 1930s.",
+      history: "Developed by Danish physiotherapist Emil Vodder and his wife Estrid while working in Cannes. Treating patients with chronic colds, Vodder noticed swollen lymph nodes and began experimenting with gentle, circular hand movements over them — contrary to the medical wisdom of the time. He presented his technique in Paris in 1936 to initial scepticism, but decades of clinical research have since established MLD as a cornerstone treatment in lymphoedema management and post-surgical care.",
+      benefits: ["Reduces oedema and post-surgical swelling", "Supports the immune system", "Aids the body's natural detoxification", "Reduces fatigue and brain fog", "Beneficial after cosmetic surgery or cancer treatment"],
+    },
   },
   {
     name: "Oncology Massage",
     description: "Specially adapted, gentle massage designed to safely support those living with or beyond cancer.",
     prices: [{ duration: "60 min", price: "£60" }],
+    info: {
+      origin: "Emerged as a formal discipline in the late 1990s and early 2000s in the United States and UK.",
+      history: "For much of the 20th century, massage was contraindicated for cancer patients over fears of spreading disease — a concern now considered largely unfounded. Researcher and therapist Tracy Walton was instrumental in changing this, publishing studies demonstrating that carefully adapted massage is safe and beneficial. Oncology massage is now offered in leading cancer centres and hospices worldwide, with practitioners trained in specific modifications for those undergoing or recovering from treatment.",
+      benefits: ["Reduces anxiety, pain and treatment-related fatigue", "Improves sleep and sense of wellbeing", "Eases nausea associated with chemotherapy", "Provides nurturing human connection during a difficult time", "Can be adapted for any stage of diagnosis or treatment"],
+    },
   },
 ];
+
+type ServiceInfo = { origin: string; history: string; benefits: string[] };
+
+const InfoModal = ({ service, onClose }: { service: { name: string; info: ServiceInfo }; onClose: () => void }) => {
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => e.key === "Escape" && onClose();
+    document.addEventListener("keydown", handler);
+    document.body.style.overflow = "hidden";
+    return () => { document.removeEventListener("keydown", handler); document.body.style.overflow = ""; };
+  }, [onClose]);
+
+  return (
+    <div onClick={onClose} style={{ position: "fixed", inset: 0, zIndex: 500, background: "rgba(10,25,5,0.7)", backdropFilter: "blur(4px)", display: "flex", alignItems: "center", justifyContent: "center", padding: "20px" }}>
+      <div onClick={e => e.stopPropagation()} style={{ background: "#fff", maxWidth: "560px", width: "100%", maxHeight: "85vh", overflowY: "auto", borderRadius: "3px", padding: "44px 40px", position: "relative", boxShadow: "0 24px 80px rgba(0,0,0,0.25)" }}>
+        {/* Close */}
+        <button onClick={onClose} style={{ position: "absolute", top: "16px", right: "16px", background: "none", border: "none", cursor: "pointer", color: "#7A6B58", fontSize: "1.4rem", lineHeight: 1, padding: "4px 8px" }} aria-label="Close">×</button>
+
+        <div style={{ width: "24px", height: "1px", background: "#C4A45A", marginBottom: "16px" }} />
+        <h3 style={{ fontFamily: "'Playfair Display', serif", fontSize: "1.4rem", color: "#1E3D0E", fontWeight: 500, marginBottom: "24px" }}>{service.name}</h3>
+
+        <p style={{ fontSize: "0.7rem", letterSpacing: "3px", color: "#8B6914", fontFamily: "'Playfair Display', serif", textTransform: "uppercase", marginBottom: "8px" }}>Origin</p>
+        <p style={{ fontSize: "1rem", color: "#5C3D1E", lineHeight: 1.75, fontFamily: "'Cormorant Garamond', serif", fontWeight: 300, marginBottom: "24px" }}>{service.info.origin}</p>
+
+        <p style={{ fontSize: "0.7rem", letterSpacing: "3px", color: "#8B6914", fontFamily: "'Playfair Display', serif", textTransform: "uppercase", marginBottom: "8px" }}>History</p>
+        <p style={{ fontSize: "1rem", color: "#5C3D1E", lineHeight: 1.75, fontFamily: "'Cormorant Garamond', serif", fontWeight: 300, marginBottom: "24px" }}>{service.info.history}</p>
+
+        <p style={{ fontSize: "0.7rem", letterSpacing: "3px", color: "#8B6914", fontFamily: "'Playfair Display', serif", textTransform: "uppercase", marginBottom: "12px" }}>Benefits</p>
+        <ul style={{ paddingLeft: 0, listStyle: "none", display: "flex", flexDirection: "column", gap: "8px" }}>
+          {service.info.benefits.map(b => (
+            <li key={b} style={{ display: "flex", alignItems: "flex-start", gap: "10px", fontSize: "1rem", color: "#5C3D1E", lineHeight: 1.7, fontFamily: "'Cormorant Garamond', serif", fontWeight: 300 }}>
+              <span style={{ color: "#C4A45A", marginTop: "2px", flexShrink: 0 }}>—</span>{b}
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  );
+};
 
 const LotusIcon = ({ size = 112, color = "#1E3D0E" }: { size?: number; color?: string }) => (
   <svg viewBox="0 0 120 90" fill="none" xmlns="http://www.w3.org/2000/svg" width={size} height={size * 0.75} style={{ display: "block", margin: "0 auto" }}>
@@ -79,9 +148,11 @@ function useScrollAnimation() {
 
 export default function App() {
   useScrollAnimation();
+  const [activeInfo, setActiveInfo] = useState<typeof services[0] | null>(null);
 
   return (
     <div style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", backgroundColor: "#F5F0E8", minHeight: "100vh" }}>
+      {activeInfo && <InfoModal service={activeInfo} onClose={() => setActiveInfo(null)} />}
       <style>{`
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
         html { scroll-behavior: smooth; }
@@ -98,12 +169,15 @@ export default function App() {
         .sticky-wa { position: fixed; bottom: 20px; right: 16px; z-index: 200; display: none; }
         @media (max-width: 768px) { .sticky-wa { display: flex; } }
 
-        nav a { color: #1E3D0E; text-decoration: none; font-family: 'Playfair Display', serif; font-size: 0.85rem; letter-spacing: 1.5px; text-transform: uppercase; opacity: 0.75; transition: opacity 0.2s; }
+        nav a { color: #fff; text-decoration: none; font-family: 'Playfair Display', serif; font-size: 0.85rem; letter-spacing: 1.5px; text-transform: uppercase; opacity: 0.85; transition: opacity 0.2s; }
         nav a:hover { opacity: 1; }
 
         .price-pill { background: #EDE6D4; border: 1px solid rgba(139,105,20,0.2); padding: 6px 14px; border-radius: 50px; font-size: 0.9rem; color: #5C3D1E; font-family: 'Playfair Display', serif; }
 
         .grid-services { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 24px; }
+
+        .info-btn { background: none; border: 1.5px solid #C4A45A; color: #C4A45A; border-radius: 50%; width: 20px; height: 20px; font-size: 0.7rem; font-family: 'Playfair Display', serif; font-style: italic; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; transition: background 0.2s, color 0.2s; vertical-align: middle; padding: 0; line-height: 1; }
+        .info-btn:hover { background: #C4A45A; color: #fff; }
 
         @media (max-width: 600px) {
           .grid-services { grid-template-columns: 1fr; }
@@ -117,8 +191,8 @@ export default function App() {
       </a>
 
       {/* Navigation */}
-      <nav style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 100, background: "rgba(245,240,232,0.93)", backdropFilter: "blur(10px)", borderBottom: "1px solid rgba(74,103,65,0.12)", padding: "15px 32px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-        <span style={{ fontFamily: "'Cormorant Garamond', serif", fontStyle: "italic", fontWeight: 500, color: "#1E3D0E", fontSize: "1.1rem", letterSpacing: "0.5px" }}>Restore & Relax</span>
+      <nav style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 100, background: "rgba(20,40,10,0.55)", backdropFilter: "blur(10px)", borderBottom: "1px solid rgba(255,255,255,0.1)", padding: "15px 32px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <span style={{ fontFamily: "'Cormorant Garamond', serif", fontStyle: "italic", fontWeight: 500, color: "#fff", fontSize: "1.1rem", letterSpacing: "0.5px" }}>Restore & Relax</span>
         <div style={{ display: "flex", gap: "24px" }}>
           <a href="#services">Services</a>
           <a href="#about">About</a>
@@ -127,42 +201,44 @@ export default function App() {
       </nav>
 
       {/* ── HERO ── */}
-      <section style={{ minHeight: "100vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", background: "linear-gradient(155deg, #E4EDE0 0%, #F5F0E8 50%, #EDE6D4 100%)", position: "relative", overflow: "hidden", paddingTop: "80px", paddingBottom: "60px" }}>
-        <LeafDecor style={{ position: "absolute", top: "60px", left: "12px", width: "80px", color: "#7A9B70", opacity: 0.6 }} />
-        <LeafDecor style={{ position: "absolute", bottom: "60px", right: "12px", width: "80px", color: "#7A9B70", opacity: 0.6, transform: "scaleX(-1) rotate(15deg)" }} />
-        <LeafDecor style={{ position: "absolute", top: "25%", right: "6%", width: "52px", color: "#4A6741", opacity: 0.35, transform: "rotate(25deg)" }} />
-        <LeafDecor style={{ position: "absolute", bottom: "25%", left: "6%", width: "52px", color: "#4A6741", opacity: 0.35, transform: "scaleX(-1) rotate(-15deg)" }} />
+      <section style={{ minHeight: "100vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", position: "relative", overflow: "hidden", paddingTop: "80px", paddingBottom: "60px", backgroundImage: `url(${heroBg})`, backgroundSize: "cover", backgroundPosition: "center 30%" }}>
+        {/* Dark green overlay */}
+        <div style={{ position: "absolute", inset: 0, background: "linear-gradient(160deg, rgba(20,45,10,0.72) 0%, rgba(30,61,14,0.65) 50%, rgba(45,80,20,0.60) 100%)", zIndex: 0 }} />
+        <LeafDecor style={{ position: "absolute", top: "60px", left: "12px", width: "80px", color: "#fff", opacity: 0.18, zIndex: 1 }} />
+        <LeafDecor style={{ position: "absolute", bottom: "60px", right: "12px", width: "80px", color: "#fff", opacity: 0.18, transform: "scaleX(-1) rotate(15deg)", zIndex: 1 }} />
+        <LeafDecor style={{ position: "absolute", top: "25%", right: "6%", width: "52px", color: "#fff", opacity: 0.12, transform: "rotate(25deg)", zIndex: 1 }} />
+        <LeafDecor style={{ position: "absolute", bottom: "25%", left: "6%", width: "52px", color: "#fff", opacity: 0.12, transform: "scaleX(-1) rotate(-15deg)", zIndex: 1 }} />
 
-        <div style={{ textAlign: "center", position: "relative", padding: "0 20px" }}>
+        <div style={{ textAlign: "center", position: "relative", padding: "0 20px", zIndex: 2 }}>
           {/* Arc "MASSAGE THERAPY" */}
           <svg viewBox="0 0 300 75" style={{ width: "270px", display: "block", margin: "0 auto -4px" }}>
             <defs>
               <path id="topArc" d="M 28,68 A 122,122 0 0,1 272,68" />
             </defs>
             <text>
-              <textPath href="#topArc" startOffset="50%" textAnchor="middle" style={{ fontFamily: "'Playfair Display', serif", fontSize: "11.5px", letterSpacing: "7px", fill: "#1E3D0E" }}>
+              <textPath href="#topArc" startOffset="50%" textAnchor="middle" style={{ fontFamily: "'Playfair Display', serif", fontSize: "11.5px", letterSpacing: "7px", fill: "#E8F0E4" }}>
                 MASSAGE THERAPY
               </textPath>
             </text>
           </svg>
 
           {/* Lotus */}
-          <LotusIcon size={116} color="#1E3D0E" />
+          <LotusIcon size={116} color="#C4A45A" />
 
           {/* Brand name */}
-          <h1 className="hero-name" style={{ fontFamily: "'Cormorant Garamond', serif", fontStyle: "italic", fontWeight: 300, fontSize: "3.8rem", color: "#1E3D0E", lineHeight: 1.1, marginTop: "2px" }}>
+          <h1 className="hero-name" style={{ fontFamily: "'Cormorant Garamond', serif", fontStyle: "italic", fontWeight: 300, fontSize: "3.8rem", color: "#fff", lineHeight: 1.1, marginTop: "2px" }}>
             Restore & Relax
           </h1>
 
           {/* by Iulia */}
-          <p style={{ marginTop: "14px", fontFamily: "'Playfair Display', serif", fontSize: "0.9rem", letterSpacing: "3px", color: "#8B6914" }}>
+          <p style={{ marginTop: "14px", fontFamily: "'Playfair Display', serif", fontSize: "0.9rem", letterSpacing: "3px", color: "#C4A45A" }}>
             <svg viewBox="0 0 40 4" width="40" height="4" style={{ display: "inline-block", verticalAlign: "middle", marginRight: "12px" }}><line x1="0" y1="2" x2="40" y2="2" stroke="#C4A45A" strokeWidth="1"/></svg>
             by Iulia
             <svg viewBox="0 0 40 4" width="40" height="4" style={{ display: "inline-block", verticalAlign: "middle", marginLeft: "12px" }}><line x1="0" y1="2" x2="40" y2="2" stroke="#C4A45A" strokeWidth="1"/></svg>
           </p>
 
           {/* Tagline */}
-          <p style={{ marginTop: "28px", fontSize: "1.15rem", color: "#4A6741", fontStyle: "italic", maxWidth: "360px", margin: "28px auto 0", lineHeight: 1.75 }}>
+          <p style={{ marginTop: "28px", fontSize: "1.15rem", color: "rgba(255,255,255,0.82)", fontStyle: "italic", maxWidth: "360px", margin: "28px auto 0", lineHeight: 1.75 }}>
             Professional massage therapy, delivered to your door.
           </p>
 
@@ -175,9 +251,9 @@ export default function App() {
         </div>
 
         {/* Scroll indicator */}
-        <div style={{ position: "absolute", bottom: "28px", left: "50%", transform: "translateX(-50%)", textAlign: "center", opacity: 0.45 }}>
-          <p style={{ fontSize: "0.65rem", letterSpacing: "3px", color: "#4A6741", fontFamily: "'Playfair Display', serif", marginBottom: "6px" }}>SCROLL</p>
-          <svg width="14" height="22" viewBox="0 0 14 22" fill="none"><rect x="5" y="1" width="4" height="7" rx="2" stroke="#4A6741" strokeWidth="1.2"/><line x1="7" y1="12" x2="7" y2="20" stroke="#4A6741" strokeWidth="1.2"/><polyline points="3,17 7,21 11,17" stroke="#4A6741" strokeWidth="1.2" fill="none"/></svg>
+        <div style={{ position: "absolute", bottom: "28px", left: "50%", transform: "translateX(-50%)", textAlign: "center", opacity: 0.55, zIndex: 2 }}>
+          <p style={{ fontSize: "0.65rem", letterSpacing: "3px", color: "#fff", fontFamily: "'Playfair Display', serif", marginBottom: "6px" }}>SCROLL</p>
+          <svg width="14" height="22" viewBox="0 0 14 22" fill="none"><rect x="5" y="1" width="4" height="7" rx="2" stroke="#fff" strokeWidth="1.2"/><line x1="7" y1="12" x2="7" y2="20" stroke="#fff" strokeWidth="1.2"/><polyline points="3,17 7,21 11,17" stroke="#fff" strokeWidth="1.2" fill="none"/></svg>
         </div>
       </section>
 
@@ -217,9 +293,12 @@ export default function App() {
                 style={{ padding: "30px 26px", borderRadius: "3px", transitionDelay: `${i * 70}ms` }}
               >
                 <div style={{ width: "24px", height: "1px", background: "#C4A45A", marginBottom: "18px" }} />
-                <h3 style={{ fontFamily: "'Playfair Display', serif", fontSize: "1.15rem", color: "#1E3D0E", fontWeight: 500, marginBottom: "10px" }}>
-                  {service.name}
-                </h3>
+                <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "10px" }}>
+                  <h3 style={{ fontFamily: "'Playfair Display', serif", fontSize: "1.15rem", color: "#1E3D0E", fontWeight: 500 }}>
+                    {service.name}
+                  </h3>
+                  <button className="info-btn" onClick={() => setActiveInfo(service)} aria-label={`About ${service.name}`} title="History & benefits">i</button>
+                </div>
                 <p style={{ fontSize: "0.95rem", color: "#7A6B58", lineHeight: 1.75, marginBottom: "18px", fontStyle: "italic", fontWeight: 300 }}>
                   {service.description}
                 </p>
