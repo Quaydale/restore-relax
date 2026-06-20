@@ -196,6 +196,22 @@ export default function Reviews({ onPrivacyClick }: { onPrivacyClick: () => void
     scrollRef.current.scrollBy({ left: dir === "left" ? -340 : 340, behavior: "smooth" });
   };
 
+  // Auto-scroll: advance one card width every 3s, reset seamlessly at halfway point
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el || recentReviews.length === 0) return;
+    const interval = setInterval(() => {
+      if (el.matches(":hover")) return;
+      const half = el.scrollWidth / 2;
+      if (el.scrollLeft >= half) {
+        el.scrollLeft = 0;
+      } else {
+        el.scrollBy({ left: 320, behavior: "smooth" });
+      }
+    }, 3000);
+    return () => clearInterval(interval);
+  }, [recentReviews.length]);
+
   return (
     <section id="reviews" style={{ padding: "88px 0", background: "#F5F0E8" }}>
       <div style={{ maxWidth: "1080px", margin: "0 auto", padding: "0 24px" }}>
@@ -255,8 +271,8 @@ export default function Reviews({ onPrivacyClick }: { onPrivacyClick: () => void
               WebkitOverflowScrolling: "touch",
             }}
           >
-            {recentReviews.map(r => (
-              <div key={r.id} style={{ flex: "0 0 300px", maxWidth: "300px" }}>
+            {[...recentReviews, ...recentReviews].map((r, i) => (
+              <div key={`${r.id}-${i}`} style={{ flex: "0 0 300px", maxWidth: "300px" }}>
                 <ReviewCard review={r} />
               </div>
             ))}
