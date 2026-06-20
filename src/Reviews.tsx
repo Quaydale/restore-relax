@@ -191,26 +191,6 @@ export default function Reviews({ onPrivacyClick }: { onPrivacyClick: () => void
   cutoff.setFullYear(cutoff.getFullYear() - 1);
   const recentReviews = reviews.filter(r => new Date(r.created_at) >= cutoff);
 
-  const scroll = (dir: "left" | "right") => {
-    if (!scrollRef.current) return;
-    scrollRef.current.scrollBy({ left: dir === "left" ? -340 : 340, behavior: "smooth" });
-  };
-
-  // Auto-scroll: advance one card width every 3s, reset seamlessly at halfway point
-  useEffect(() => {
-    const el = scrollRef.current;
-    if (!el || recentReviews.length === 0) return;
-    const interval = setInterval(() => {
-      if (el.matches(":hover")) return;
-      const half = el.scrollWidth / 2;
-      if (el.scrollLeft >= half) {
-        el.scrollLeft = 0;
-      } else {
-        el.scrollBy({ left: 320, behavior: "smooth" });
-      }
-    }, 3000);
-    return () => clearInterval(interval);
-  }, [recentReviews.length]);
 
   return (
     <section id="reviews" style={{ padding: "88px 0", background: "#F5F0E8" }}>
@@ -245,6 +225,8 @@ export default function Reviews({ onPrivacyClick }: { onPrivacyClick: () => void
         <p style={{ textAlign: "center", color: "#aaa", fontStyle: "italic", fontFamily: "'Cormorant Garamond', serif" }}>Loading reviews…</p>
       ) : reviews.length === 0 ? (
         <p style={{ textAlign: "center", color: "#aaa", fontStyle: "italic", fontFamily: "'Cormorant Garamond', serif", marginBottom: "40px" }}>No reviews yet — be the first!</p>
+      ) : recentReviews.length === 0 ? (
+        <p style={{ textAlign: "center", color: "#aaa", fontStyle: "italic", fontFamily: "'Cormorant Garamond', serif", marginBottom: "40px" }}>No recent reviews.</p>
       ) : showAll ? (
         /* All reviews grid */
         <div style={{ maxWidth: "1080px", margin: "0 auto", padding: "0 24px" }}>
@@ -261,43 +243,34 @@ export default function Reviews({ onPrivacyClick }: { onPrivacyClick: () => void
           </div>
         </div>
       ) : (
-        /* Scrolling carousel */
-        <div style={{ position: "relative" }}>
-          <div
-            ref={scrollRef}
-            style={{
-              display: "flex", gap: "20px", overflowX: "auto", padding: "8px 24px 24px",
-              scrollbarWidth: "none", msOverflowStyle: "none",
-              WebkitOverflowScrolling: "touch",
-            }}
-          >
+        /* CSS marquee carousel */
+        <div style={{
+          overflow: "hidden", paddingBottom: "16px",
+          maskImage: "linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%)",
+          WebkitMaskImage: "linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%)",
+        }}>
+          <style>{`
+            @keyframes marquee {
+              0%   { transform: translateX(0); }
+              100% { transform: translateX(-50%); }
+            }
+            .reviews-track {
+              display: flex;
+              gap: 20px;
+              width: max-content;
+              animation: marquee ${recentReviews.length * 4}s linear infinite;
+            }
+            .reviews-track:hover {
+              animation-play-state: paused;
+            }
+          `}</style>
+          <div className="reviews-track" ref={scrollRef}>
             {[...recentReviews, ...recentReviews].map((r, i) => (
-              <div key={`${r.id}-${i}`} style={{ flex: "0 0 300px", maxWidth: "300px" }}>
+              <div key={`${r.id}-${i}`} style={{ width: "300px", flexShrink: 0 }}>
                 <ReviewCard review={r} />
               </div>
             ))}
           </div>
-          {/* Arrow buttons */}
-          <button
-            onClick={() => scroll("left")}
-            aria-label="Scroll left"
-            style={{
-              position: "absolute", top: "50%", transform: "translateY(-50%)", left: "4px",
-              background: "#fff", border: "1px solid rgba(74,103,65,0.2)", borderRadius: "50%",
-              width: "40px", height: "40px", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center",
-              boxShadow: "0 2px 8px rgba(0,0,0,0.08)", color: "#1E3D0E", fontSize: "1.2rem", zIndex: 1,
-            }}
-          >‹</button>
-          <button
-            onClick={() => scroll("right")}
-            aria-label="Scroll right"
-            style={{
-              position: "absolute", top: "50%", transform: "translateY(-50%)", right: "4px",
-              background: "#fff", border: "1px solid rgba(74,103,65,0.2)", borderRadius: "50%",
-              width: "40px", height: "40px", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center",
-              boxShadow: "0 2px 8px rgba(0,0,0,0.08)", color: "#1E3D0E", fontSize: "1.2rem", zIndex: 1,
-            }}
-          >›</button>
         </div>
       )}
 
