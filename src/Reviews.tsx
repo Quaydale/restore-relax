@@ -187,6 +187,10 @@ export default function Reviews({ onPrivacyClick }: { onPrivacyClick: () => void
     ? (reviews.reduce((s, r) => s + r.rating, 0) / reviews.length).toFixed(1)
     : null;
 
+  const cutoff = new Date();
+  cutoff.setFullYear(cutoff.getFullYear() - 1);
+  const recentReviews = reviews.filter(r => new Date(r.created_at) >= cutoff);
+
   const scroll = (dir: "left" | "right") => {
     if (!scrollRef.current) return;
     scrollRef.current.scrollBy({ left: dir === "left" ? -340 : 340, behavior: "smooth" });
@@ -251,7 +255,7 @@ export default function Reviews({ onPrivacyClick }: { onPrivacyClick: () => void
               WebkitOverflowScrolling: "touch",
             }}
           >
-            {reviews.map(r => (
+            {recentReviews.map(r => (
               <div key={r.id} style={{ flex: "0 0 300px", maxWidth: "300px" }}>
                 <ReviewCard review={r} />
               </div>
