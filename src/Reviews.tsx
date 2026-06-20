@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { supabase, type Review } from "./supabase";
 
 // ── Star components ──────────────────────────────────────────────────────────
@@ -168,6 +168,8 @@ export default function Reviews({ onPrivacyClick }: { onPrivacyClick: () => void
   const [reviews, setReviews] = useState<Review[]>([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
+  const [showAll, setShowAll] = useState(false);
+  const scrollRef = useRef<HTMLDivElement>(null);
 
   const load = async () => {
     const { data } = await supabase
@@ -185,39 +187,102 @@ export default function Reviews({ onPrivacyClick }: { onPrivacyClick: () => void
     ? (reviews.reduce((s, r) => s + r.rating, 0) / reviews.length).toFixed(1)
     : null;
 
+  const scroll = (dir: "left" | "right") => {
+    if (!scrollRef.current) return;
+    scrollRef.current.scrollBy({ left: dir === "left" ? -340 : 340, behavior: "smooth" });
+  };
+
   return (
-    <section id="reviews" style={{ padding: "88px 24px", background: "#F5F0E8" }}>
-      <div style={{ maxWidth: "1080px", margin: "0 auto" }}>
+    <section id="reviews" style={{ padding: "88px 0", background: "#F5F0E8" }}>
+      <div style={{ maxWidth: "1080px", margin: "0 auto", padding: "0 24px" }}>
 
         {/* Header */}
-        <div style={{ textAlign: "center", marginBottom: "56px" }}>
+        <div style={{ textAlign: "center", marginBottom: "48px" }}>
           <p style={{ fontSize: "0.7rem", letterSpacing: "4px", color: "#8B6914", fontFamily: "'Playfair Display', serif", marginBottom: "16px", textTransform: "uppercase" }}>Client Experiences</p>
           <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontStyle: "italic", fontWeight: 300, fontSize: "clamp(1.9rem, 5vw, 2.7rem)", color: "#1E3D0E" }}>
             Reviews
           </h2>
           <div style={{ width: "36px", height: "1px", background: "#C4A45A", margin: "18px auto 0" }} />
           {avgRating && (
-            <div style={{ marginTop: "20px", display: "flex", alignItems: "center", justifyContent: "center", gap: "10px" }}>
+            <div style={{ marginTop: "20px", display: "flex", alignItems: "center", justifyContent: "center", gap: "10px", flexWrap: "wrap" }}>
               <StarRating value={Math.round(Number(avgRating))} />
               <span style={{ fontFamily: "'Playfair Display', serif", fontSize: "1.1rem", color: "#1E3D0E" }}>
-                {avgRating} <span style={{ color: "#aaa", fontWeight: 300 }}>({reviews.length} {reviews.length === 1 ? "review" : "reviews"})</span>
+                {avgRating}{" "}
+                <button
+                  onClick={() => setShowAll(v => !v)}
+                  style={{ background: "none", border: "none", padding: 0, cursor: "pointer", color: "#4A6741", fontFamily: "'Playfair Display', serif", fontSize: "1.1rem", fontWeight: 300, textDecoration: "underline", textUnderlineOffset: "3px" }}
+                >
+                  {reviews.length} {reviews.length === 1 ? "review" : "reviews"}
+                </button>
               </span>
             </div>
           )}
         </div>
+      </div>
 
-        {/* Review grid */}
-        {loading ? (
-          <p style={{ textAlign: "center", color: "#aaa", fontStyle: "italic", fontFamily: "'Cormorant Garamond', serif" }}>Loading reviews…</p>
-        ) : reviews.length === 0 ? (
-          <p style={{ textAlign: "center", color: "#aaa", fontStyle: "italic", fontFamily: "'Cormorant Garamond', serif", marginBottom: "40px" }}>No reviews yet — be the first!</p>
-        ) : (
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))", gap: "24px", marginBottom: "48px" }}>
+      {/* Review display */}
+      {loading ? (
+        <p style={{ textAlign: "center", color: "#aaa", fontStyle: "italic", fontFamily: "'Cormorant Garamond', serif" }}>Loading reviews…</p>
+      ) : reviews.length === 0 ? (
+        <p style={{ textAlign: "center", color: "#aaa", fontStyle: "italic", fontFamily: "'Cormorant Garamond', serif", marginBottom: "40px" }}>No reviews yet — be the first!</p>
+      ) : showAll ? (
+        /* All reviews grid */
+        <div style={{ maxWidth: "1080px", margin: "0 auto", padding: "0 24px" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))", gap: "24px", marginBottom: "32px" }}>
             {reviews.map(r => <ReviewCard key={r.id} review={r} />)}
           </div>
-        )}
+          <div style={{ textAlign: "center", marginBottom: "48px" }}>
+            <button
+              onClick={() => setShowAll(false)}
+              style={{ background: "none", border: "1px solid #C4A45A", color: "#8B6914", padding: "10px 28px", borderRadius: "50px", cursor: "pointer", fontFamily: "'Playfair Display', serif", fontSize: "0.85rem", letterSpacing: "0.5px" }}
+            >
+              Show less
+            </button>
+          </div>
+        </div>
+      ) : (
+        /* Scrolling carousel */
+        <div style={{ position: "relative" }}>
+          <div
+            ref={scrollRef}
+            style={{
+              display: "flex", gap: "20px", overflowX: "auto", padding: "8px 24px 24px",
+              scrollbarWidth: "none", msOverflowStyle: "none",
+              WebkitOverflowScrolling: "touch",
+            }}
+          >
+            {reviews.map(r => (
+              <div key={r.id} style={{ flex: "0 0 300px", maxWidth: "300px" }}>
+                <ReviewCard review={r} />
+              </div>
+            ))}
+          </div>
+          {/* Arrow buttons */}
+          <button
+            onClick={() => scroll("left")}
+            aria-label="Scroll left"
+            style={{
+              position: "absolute", top: "50%", transform: "translateY(-50%)", left: "4px",
+              background: "#fff", border: "1px solid rgba(74,103,65,0.2)", borderRadius: "50%",
+              width: "40px", height: "40px", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center",
+              boxShadow: "0 2px 8px rgba(0,0,0,0.08)", color: "#1E3D0E", fontSize: "1.2rem", zIndex: 1,
+            }}
+          >‹</button>
+          <button
+            onClick={() => scroll("right")}
+            aria-label="Scroll right"
+            style={{
+              position: "absolute", top: "50%", transform: "translateY(-50%)", right: "4px",
+              background: "#fff", border: "1px solid rgba(74,103,65,0.2)", borderRadius: "50%",
+              width: "40px", height: "40px", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center",
+              boxShadow: "0 2px 8px rgba(0,0,0,0.08)", color: "#1E3D0E", fontSize: "1.2rem", zIndex: 1,
+            }}
+          >›</button>
+        </div>
+      )}
 
-        {/* Leave a review */}
+      {/* Leave a review */}
+      <div style={{ maxWidth: "1080px", margin: "0 auto", padding: "0 24px" }}>
         <div style={{ background: "#fff", border: "1px solid rgba(74,103,65,0.15)", borderRadius: "3px", padding: "40px", maxWidth: "600px", margin: "0 auto" }}>
           <button
             onClick={() => setShowForm(v => !v)}
@@ -235,8 +300,8 @@ export default function Reviews({ onPrivacyClick }: { onPrivacyClick: () => void
             </div>
           )}
         </div>
-
       </div>
+
     </section>
   );
 }
