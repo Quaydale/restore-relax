@@ -50,7 +50,15 @@ const services = [
     info: {
       origin: "Sweden, early 19th century.",
       history: "Developed by Swedish physiologist Pehr Henrik Ling in the 1820s, who synthesised techniques from Chinese, Egyptian, Greek and Roman healing traditions into a unified system. His 'Medical Gymnastics' laid the foundation for what became the most widely practised massage form in the Western world. It was introduced to the United States in the 1850s and has remained the cornerstone of modern massage therapy ever since.",
+      intro: "Swedish massage promotes deep physical and mental relaxation by combining long, gliding strokes, kneading, and rhythmic tapping to ease muscle tension and boost circulation.",
       benefits: ["Promotes deep relaxation and stress relief", "Improves blood and lymphatic circulation", "Eases muscle tension and stiffness", "Boosts mood by releasing endorphins", "Supports better sleep quality"],
+      extraSections: [
+        {
+          label: "Complementary Therapy",
+          text: "Swedish massage serves as an excellent complementary therapy to help manage pain and discomfort associated with:",
+          items: ["Lower back, neck, and shoulder strain", "Osteoarthritis and rheumatoid arthritis", "Fibromyalgia"],
+        },
+      ],
       contraindications: ["Fever or contagious illness", "Contagious skin conditions", "Blood clotting disorders or DVT", "Uncontrolled high blood pressure", "Recent surgery — please wait until cleared by your doctor"],
     },
   },
@@ -61,7 +69,17 @@ const services = [
     info: {
       origin: "Ancient traditions across Egypt, China and India; formalised as a Western practice in the 1980s.",
       history: "Massage during pregnancy has been documented in ancient Egyptian and Chinese texts. In the West, therapist Carole Osborne pioneered dedicated prenatal massage training in the 1980s, establishing the safety protocols and positioning techniques still used today. Research over the past 30 years has confirmed meaningful benefits for both mother and baby.",
-      benefits: ["Relieves lower back, hip and sciatic pain", "Reduces swelling in hands and feet", "Lowers levels of stress hormones", "Improves sleep quality", "May support shorter, easier labour"],
+      intro: "Pregnancy (prenatal) massage safely alleviates physical aches and reduces stress. It targets common discomforts like lower back pain and joint strain, improves circulation to reduce swelling, balances mood-regulating hormones, and promotes deeper sleep.",
+      benefits: [
+        "Pain & Tension Relief — eases muscle strain, sciatica, and joint aches that come with shifting posture and weight gain",
+        "Reduced Swelling — stimulates the lymphatic system to flush excess fluids, minimising swelling in the hands and ankles",
+        "Stress & Anxiety Reduction — decreases stress hormones while boosting serotonin to regulate mood and alleviate low mood",
+        "Better Sleep — promotes physical relaxation that helps combat insomnia",
+        "Improved Circulation — enhances blood flow, ensuring optimal oxygen and nutrient delivery to both you and your baby",
+      ],
+      extraSections: [
+        { label: "Safety & Timing", text: "Most health providers recommend waiting until the second trimester (after 12 weeks) before beginning prenatal massage." },
+      ],
       contraindications: ["High-risk pregnancy or history of miscarriage — please consult your midwife or doctor first", "Pre-eclampsia or high blood pressure", "Placenta praevia", "Severe swelling, sudden headaches or visual disturbances", "Deep vein thrombosis (DVT)"],
     },
   },
@@ -98,10 +116,11 @@ const services = [
   },
 ];
 
+type ExtraSection = { label: string; text?: string; items?: string[] };
 type ServiceInfo = {
   origin: string; history: string; benefits: string[]; contraindications: string[];
   intro?: string; timing?: { label: string; text: string }[]; hydration?: string;
-  postSurgery?: string; seekingTreatment?: string;
+  postSurgery?: string; seekingTreatment?: string; extraSections?: ExtraSection[];
 };
 
 const InfoModal = ({ service, onClose }: { service: { name: string; info: ServiceInfo }; onClose: () => void }) => {
@@ -165,6 +184,22 @@ const InfoModal = ({ service, onClose }: { service: { name: string; info: Servic
             <p style={{ fontSize: "1rem", color: "#5C3D1E", lineHeight: 1.75, fontFamily: "'Cormorant Garamond', serif", fontWeight: 300 }}>{service.info.hydration}</p>
           </div>
         )}
+
+        {service.info.extraSections?.map((s, i) => (
+          <div key={i} style={{ borderTop: "1px solid rgba(139,105,20,0.15)", paddingTop: "22px", marginBottom: "22px" }}>
+            <p style={{ fontSize: "0.7rem", letterSpacing: "3px", color: "#8B6914", fontFamily: "'Playfair Display', serif", textTransform: "uppercase", marginBottom: "12px" }}>{s.label}</p>
+            {s.text && <p style={{ fontSize: "1rem", color: "#5C3D1E", lineHeight: 1.75, fontFamily: "'Cormorant Garamond', serif", fontWeight: 300, marginBottom: s.items ? "12px" : 0 }}>{s.text}</p>}
+            {s.items && (
+              <ul style={{ paddingLeft: 0, listStyle: "none", display: "flex", flexDirection: "column", gap: "8px" }}>
+                {s.items.map((item, j) => (
+                  <li key={j} style={{ display: "flex", alignItems: "flex-start", gap: "10px", fontSize: "1rem", color: "#5C3D1E", lineHeight: 1.7, fontFamily: "'Cormorant Garamond', serif", fontWeight: 300 }}>
+                    <span style={{ color: "#C4A45A", marginTop: "2px", flexShrink: 0 }}>—</span>{item}
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+        ))}
 
         <div style={{ borderTop: "1px solid rgba(139,105,20,0.15)", paddingTop: "22px" }}>
           <p style={{ fontSize: "0.7rem", letterSpacing: "3px", color: "#8B6914", fontFamily: "'Playfair Display', serif", textTransform: "uppercase", marginBottom: "12px" }}>Please consult your doctor before booking if you have</p>
