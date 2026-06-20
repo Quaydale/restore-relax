@@ -14,8 +14,22 @@ const services = [
     info: {
       origin: "Early 20th century, popularised during the 1970s running boom in the United States and Europe.",
       history: "Rooted in Swedish massage techniques, sports massage was refined by coaches and physiotherapists working alongside competitive athletes. It gained mainstream recognition at the 1984 Los Angeles Olympics, where it was offered to athletes for the first time at an official Games.",
+      intro: "Sports massage utilises deep tissue and stretching techniques to alleviate muscle tension, enhance flexibility, and accelerate recovery. It improves circulation and aids in breaking down scar tissue. Beyond physical recovery, it offers significant mental health benefits by reducing stress and lowering cortisol levels.",
       benefits: ["Reduces post-exercise muscle soreness", "Helps prevent soft tissue injuries", "Improves flexibility and range of motion", "Speeds recovery between training sessions", "Reduces anxiety and mental fatigue"],
-      contraindications: ["Acute injury or inflammation in the area to be treated", "Fever or active infection", "Open wounds or skin conditions", "Blood clotting disorders or DVT", "Recent surgery — please wait until cleared by your doctor", "Severe osteoporosis"],
+      timing: [
+        { label: "Pre-Event", text: "Pre-competition massages are generally lighter, aiming to stimulate blood flow and mentally prepare the athlete." },
+        { label: "Post-Event", text: "Post-workout massages focus on flushing out metabolic waste and easing tight, overworked muscles." },
+        { label: "During Training", text: "Consistent, regular treatments manage heavy training loads, prevent overtraining, and optimise physical progress." },
+      ],
+      contraindications: [
+        "Systemic infections or fever — massage increases circulation which can worsen illness",
+        "Contagious skin conditions (e.g. ringworm, impetigo, shingles)",
+        "Deep Vein Thrombosis (DVT) or blood clots — massage can dislodge a clot with potentially fatal consequences",
+        "Bleeding disorders or blood-thinning medications",
+        "Intoxication or active drug use",
+        "Unstable cardiovascular conditions or recent heart issues",
+        "Tumours or active cancer — formal medical clearance required",
+      ],
     },
   },
   {
@@ -61,8 +75,8 @@ const services = [
       intro: "Manual Lymphatic Drainage (MLD) is a specialised, gentle medical massage technique designed to stimulate the flow of lymphatic fluid, helping reduce swelling and assist the body's natural waste-filtration processes.",
       benefits: ["Reduces oedema and post-surgical swelling", "Supports the immune system", "Aids the body's natural detoxification", "Reduces fatigue and brain fog", "Beneficial after cosmetic surgery or cancer treatment"],
       timing: [
-        "Morning is generally the best time for MLD — it reduces facial and body puffiness, boosts energy, and moves fluids that have accumulated overnight.",
-        "For general wellness and detox, one session every 2–4 weeks is standard to support the immune system and maintain fluid balance.",
+        { label: "Best Time of Day", text: "Morning is generally the best time for MLD — it reduces facial and body puffiness, boosts energy, and moves fluids that have accumulated overnight." },
+        { label: "Frequency", text: "For general wellness and detox, one session every 2–4 weeks is standard to support the immune system and maintain fluid balance." },
       ],
       hydration: "For the massage to be most effective, aim to be well-hydrated without feeling uncomfortably full. Drink 1–2 glasses of water 30–60 minutes before your session, and 1–2 litres in the hours after.",
       contraindications: ["Acute infections or fevers", "Uncontrolled congestive heart failure", "Active, untreated blood clots (DVT)", "Severe kidney or liver failure"],
@@ -76,15 +90,18 @@ const services = [
     info: {
       origin: "Emerged as a formal discipline in the late 1990s and early 2000s in the United States and UK.",
       history: "For much of the 20th century, massage was contraindicated for cancer patients over fears of spreading disease — a concern now considered largely unfounded. Researcher and therapist Tracy Walton was instrumental in changing this, publishing studies demonstrating that carefully adapted massage is safe and beneficial. Oncology massage is now offered in leading cancer centres and hospices worldwide, with practitioners trained in specific modifications for those undergoing or recovering from treatment.",
+      intro: "Oncology massage is a highly specialised, modified form of therapeutic touch tailored for people living with, recovering from, or moving beyond cancer. It focuses on safety and symptom relief — such as reducing anxiety, pain, and fatigue — by adapting techniques around surgical sites, medical devices, and treatment side effects. Because cancer treatments such as chemotherapy or radiation leave the body vulnerable, traditional or deep-tissue massage can sometimes be unsafe.",
       benefits: ["Reduces anxiety, pain and treatment-related fatigue", "Improves sleep and sense of wellbeing", "Eases nausea associated with chemotherapy", "Provides nurturing human connection during a difficult time", "Can be adapted for any stage of diagnosis or treatment"],
       contraindications: ["Active fever or acute infection", "Unstable medical condition — please check with your oncologist first", "Treatment site skin reactions (e.g. radiotherapy burns) — those areas will be avoided", "Severe thrombocytopaenia (very low platelets)", "Bone metastases — pressure over affected areas will be adapted or avoided"],
+      seekingTreatment: "Before beginning any massage, you must consult your primary oncologist or care team for approval and clearance.",
     },
   },
 ];
 
 type ServiceInfo = {
   origin: string; history: string; benefits: string[]; contraindications: string[];
-  intro?: string; timing?: string[]; hydration?: string; postSurgery?: string;
+  intro?: string; timing?: { label: string; text: string }[]; hydration?: string;
+  postSurgery?: string; seekingTreatment?: string;
 };
 
 const InfoModal = ({ service, onClose }: { service: { name: string; info: ServiceInfo }; onClose: () => void }) => {
@@ -132,9 +149,12 @@ const InfoModal = ({ service, onClose }: { service: { name: string; info: Servic
 
         {service.info.timing && (
           <div style={{ borderTop: "1px solid rgba(139,105,20,0.15)", paddingTop: "22px", marginBottom: "22px" }}>
-            <p style={{ fontSize: "0.7rem", letterSpacing: "3px", color: "#8B6914", fontFamily: "'Playfair Display', serif", textTransform: "uppercase", marginBottom: "12px" }}>When to Book</p>
+            <p style={{ fontSize: "0.7rem", letterSpacing: "3px", color: "#8B6914", fontFamily: "'Playfair Display', serif", textTransform: "uppercase", marginBottom: "16px" }}>When to Book</p>
             {service.info.timing.map((t, i) => (
-              <p key={i} style={{ fontSize: "1rem", color: "#5C3D1E", lineHeight: 1.75, fontFamily: "'Cormorant Garamond', serif", fontWeight: 300, marginBottom: "10px" }}>{t}</p>
+              <div key={i} style={{ marginBottom: "14px" }}>
+                <p style={{ fontSize: "0.75rem", color: "#8B6914", fontFamily: "'Playfair Display', serif", fontWeight: 600, marginBottom: "4px" }}>{t.label}</p>
+                <p style={{ fontSize: "1rem", color: "#5C3D1E", lineHeight: 1.75, fontFamily: "'Cormorant Garamond', serif", fontWeight: 300 }}>{t.text}</p>
+              </div>
             ))}
           </div>
         )}
@@ -161,6 +181,13 @@ const InfoModal = ({ service, onClose }: { service: { name: string; info: Servic
           <div style={{ borderTop: "1px solid rgba(139,105,20,0.15)", paddingTop: "22px" }}>
             <p style={{ fontSize: "0.7rem", letterSpacing: "3px", color: "#8B6914", fontFamily: "'Playfair Display', serif", textTransform: "uppercase", marginBottom: "12px" }}>After Surgery</p>
             <p style={{ fontSize: "1rem", color: "#5C3D1E", lineHeight: 1.75, fontFamily: "'Cormorant Garamond', serif", fontWeight: 300 }}>{service.info.postSurgery}</p>
+          </div>
+        )}
+
+        {service.info.seekingTreatment && (
+          <div style={{ borderTop: "1px solid rgba(139,105,20,0.15)", paddingTop: "22px" }}>
+            <p style={{ fontSize: "0.7rem", letterSpacing: "3px", color: "#8B6914", fontFamily: "'Playfair Display', serif", textTransform: "uppercase", marginBottom: "12px" }}>Seeking Treatment</p>
+            <p style={{ fontSize: "1rem", color: "#5C3D1E", lineHeight: 1.75, fontFamily: "'Cormorant Garamond', serif", fontWeight: 300 }}>{service.info.seekingTreatment}</p>
           </div>
         )}
       </div>
