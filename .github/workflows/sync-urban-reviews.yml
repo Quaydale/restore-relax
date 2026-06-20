@@ -1,0 +1,36 @@
+name: Sync Urban Reviews
+
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Dry run — print what would be inserted without writing to DB"
+        type: boolean
+        default: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Sync Urban reviews to Supabase
+        env:
+          URBAN_AUTH_TOKEN: ${{ secrets.URBAN_AUTH_TOKEN }}
+          URBAN_APP_TOKEN: ${{ secrets.URBAN_APP_TOKEN }}
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+        run: |
+          if [ "${{ inputs.dry_run }}" = "true" ]; then
+            echo "DRY RUN — no writes will occur"
+            python scripts/sync_urban_reviews.py --dry-run 2>&1 || python scripts/sync_urban_reviews.py
+          else
+            python scripts/sync_urban_reviews.py
+          fi
