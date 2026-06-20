@@ -15,6 +15,7 @@ const services = [
       origin: "Early 20th century, popularised during the 1970s running boom in the United States and Europe.",
       history: "Rooted in Swedish massage techniques, sports massage was refined by coaches and physiotherapists working alongside competitive athletes. It gained mainstream recognition at the 1984 Los Angeles Olympics, where it was offered to athletes for the first time at an official Games.",
       benefits: ["Reduces post-exercise muscle soreness", "Helps prevent soft tissue injuries", "Improves flexibility and range of motion", "Speeds recovery between training sessions", "Reduces anxiety and mental fatigue"],
+      contraindications: ["Acute injury or inflammation in the area to be treated", "Fever or active infection", "Open wounds or skin conditions", "Blood clotting disorders or DVT", "Recent surgery — please wait until cleared by your doctor", "Severe osteoporosis"],
     },
   },
   {
@@ -25,6 +26,7 @@ const services = [
       origin: "Formalised in North America during the 1970s, building on ancient deep-pressure healing traditions found across many cultures.",
       history: "Canadian physiotherapist Therese Pfrimmer is credited with developing one of the first structured deep tissue techniques after using it to recover from her own partial paralysis in the 1940s. The modern form draws on earlier practices from ancient Egypt, Greece and China where deep manual pressure was used to treat pain.",
       benefits: ["Breaks down scar tissue and adhesions", "Relieves chronic muscle tension and pain", "Lowers blood pressure and heart rate", "Reduces stress hormone levels", "Supports rehabilitation after injury"],
+      contraindications: ["Blood clotting disorders", "Increased risk of injury, such as bone fractures", "Nerve injury", "Older age", "Any recent surgery or chemotherapy", "Wounds or skin conditions", "Hernia"],
     },
   },
   {
@@ -35,6 +37,7 @@ const services = [
       origin: "Sweden, early 19th century.",
       history: "Developed by Swedish physiologist Pehr Henrik Ling in the 1820s, who synthesised techniques from Chinese, Egyptian, Greek and Roman healing traditions into a unified system. His 'Medical Gymnastics' laid the foundation for what became the most widely practised massage form in the Western world. It was introduced to the United States in the 1850s and has remained the cornerstone of modern massage therapy ever since.",
       benefits: ["Promotes deep relaxation and stress relief", "Improves blood and lymphatic circulation", "Eases muscle tension and stiffness", "Boosts mood by releasing endorphins", "Supports better sleep quality"],
+      contraindications: ["Fever or contagious illness", "Contagious skin conditions", "Blood clotting disorders or DVT", "Uncontrolled high blood pressure", "Recent surgery — please wait until cleared by your doctor"],
     },
   },
   {
@@ -45,6 +48,7 @@ const services = [
       origin: "Ancient traditions across Egypt, China and India; formalised as a Western practice in the 1980s.",
       history: "Massage during pregnancy has been documented in ancient Egyptian and Chinese texts. In the West, therapist Carole Osborne pioneered dedicated prenatal massage training in the 1980s, establishing the safety protocols and positioning techniques still used today. Research over the past 30 years has confirmed meaningful benefits for both mother and baby.",
       benefits: ["Relieves lower back, hip and sciatic pain", "Reduces swelling in hands and feet", "Lowers levels of stress hormones", "Improves sleep quality", "May support shorter, easier labour"],
+      contraindications: ["High-risk pregnancy or history of miscarriage — please consult your midwife or doctor first", "Pre-eclampsia or high blood pressure", "Placenta praevia", "Severe swelling, sudden headaches or visual disturbances", "Deep vein thrombosis (DVT)"],
     },
   },
   {
@@ -55,6 +59,7 @@ const services = [
       origin: "France, 1930s.",
       history: "Developed by Danish physiotherapist Emil Vodder and his wife Estrid while working in Cannes. Treating patients with chronic colds, Vodder noticed swollen lymph nodes and began experimenting with gentle, circular hand movements over them — contrary to the medical wisdom of the time. He presented his technique in Paris in 1936 to initial scepticism, but decades of clinical research have since established MLD as a cornerstone treatment in lymphoedema management and post-surgical care.",
       benefits: ["Reduces oedema and post-surgical swelling", "Supports the immune system", "Aids the body's natural detoxification", "Reduces fatigue and brain fog", "Beneficial after cosmetic surgery or cancer treatment"],
+      contraindications: ["Acute infection, fever or inflammation", "Congestive heart failure or kidney failure", "Active blood clots or DVT", "Active, untreated malignancy — please seek oncology clearance first", "Thyroid disorders — consult your doctor before booking"],
     },
   },
   {
@@ -65,11 +70,12 @@ const services = [
       origin: "Emerged as a formal discipline in the late 1990s and early 2000s in the United States and UK.",
       history: "For much of the 20th century, massage was contraindicated for cancer patients over fears of spreading disease — a concern now considered largely unfounded. Researcher and therapist Tracy Walton was instrumental in changing this, publishing studies demonstrating that carefully adapted massage is safe and beneficial. Oncology massage is now offered in leading cancer centres and hospices worldwide, with practitioners trained in specific modifications for those undergoing or recovering from treatment.",
       benefits: ["Reduces anxiety, pain and treatment-related fatigue", "Improves sleep and sense of wellbeing", "Eases nausea associated with chemotherapy", "Provides nurturing human connection during a difficult time", "Can be adapted for any stage of diagnosis or treatment"],
+      contraindications: ["Active fever or acute infection", "Unstable medical condition — please check with your oncologist first", "Treatment site skin reactions (e.g. radiotherapy burns) — those areas will be avoided", "Severe thrombocytopaenia (very low platelets)", "Bone metastases — pressure over affected areas will be adapted or avoided"],
     },
   },
 ];
 
-type ServiceInfo = { origin: string; history: string; benefits: string[] };
+type ServiceInfo = { origin: string; history: string; benefits: string[]; contraindications: string[] };
 
 const InfoModal = ({ service, onClose }: { service: { name: string; info: ServiceInfo }; onClose: () => void }) => {
   const headingId = `modal-title-${service.name.replace(/\s+/g, "-").toLowerCase()}`;
@@ -108,13 +114,24 @@ const InfoModal = ({ service, onClose }: { service: { name: string; info: Servic
         <p style={{ fontSize: "1rem", color: "#5C3D1E", lineHeight: 1.75, fontFamily: "'Cormorant Garamond', serif", fontWeight: 300, marginBottom: "24px" }}>{service.info.history}</p>
 
         <p style={{ fontSize: "0.7rem", letterSpacing: "3px", color: "#8B6914", fontFamily: "'Playfair Display', serif", textTransform: "uppercase", marginBottom: "12px" }}>Benefits</p>
-        <ul style={{ paddingLeft: 0, listStyle: "none", display: "flex", flexDirection: "column", gap: "8px" }}>
+        <ul style={{ paddingLeft: 0, listStyle: "none", display: "flex", flexDirection: "column", gap: "8px", marginBottom: "28px" }}>
           {service.info.benefits.map((b, i) => (
             <li key={i} style={{ display: "flex", alignItems: "flex-start", gap: "10px", fontSize: "1rem", color: "#5C3D1E", lineHeight: 1.7, fontFamily: "'Cormorant Garamond', serif", fontWeight: 300 }}>
               <span style={{ color: "#C4A45A", marginTop: "2px", flexShrink: 0 }}>—</span>{b}
             </li>
           ))}
         </ul>
+
+        <div style={{ borderTop: "1px solid rgba(139,105,20,0.15)", paddingTop: "22px" }}>
+          <p style={{ fontSize: "0.7rem", letterSpacing: "3px", color: "#8B6914", fontFamily: "'Playfair Display', serif", textTransform: "uppercase", marginBottom: "12px" }}>Please consult your doctor before booking if you have</p>
+          <ul style={{ paddingLeft: 0, listStyle: "none", display: "flex", flexDirection: "column", gap: "8px" }}>
+            {service.info.contraindications.map((c, i) => (
+              <li key={i} style={{ display: "flex", alignItems: "flex-start", gap: "10px", fontSize: "1rem", color: "#5C3D1E", lineHeight: 1.7, fontFamily: "'Cormorant Garamond', serif", fontWeight: 300 }}>
+                <span style={{ color: "#C4A45A", marginTop: "2px", flexShrink: 0 }}>—</span>{c}
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
     </div>
   );
