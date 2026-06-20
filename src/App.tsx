@@ -58,8 +58,15 @@ const services = [
     info: {
       origin: "France, 1930s.",
       history: "Developed by Danish physiotherapist Emil Vodder and his wife Estrid while working in Cannes. Treating patients with chronic colds, Vodder noticed swollen lymph nodes and began experimenting with gentle, circular hand movements over them — contrary to the medical wisdom of the time. He presented his technique in Paris in 1936 to initial scepticism, but decades of clinical research have since established MLD as a cornerstone treatment in lymphoedema management and post-surgical care.",
+      intro: "Manual Lymphatic Drainage (MLD) is a specialised, gentle medical massage technique designed to stimulate the flow of lymphatic fluid, helping reduce swelling and assist the body's natural waste-filtration processes.",
       benefits: ["Reduces oedema and post-surgical swelling", "Supports the immune system", "Aids the body's natural detoxification", "Reduces fatigue and brain fog", "Beneficial after cosmetic surgery or cancer treatment"],
-      contraindications: ["Acute infection, fever or inflammation", "Congestive heart failure or kidney failure", "Active blood clots or DVT", "Active, untreated malignancy — please seek oncology clearance first", "Thyroid disorders — consult your doctor before booking"],
+      timing: [
+        "Morning is generally the best time for MLD — it reduces facial and body puffiness, boosts energy, and moves fluids that have accumulated overnight.",
+        "For general wellness and detox, one session every 2–4 weeks is standard to support the immune system and maintain fluid balance.",
+      ],
+      hydration: "For the massage to be most effective, aim to be well-hydrated without feeling uncomfortably full. Drink 1–2 glasses of water 30–60 minutes before your session, and 1–2 litres in the hours after.",
+      contraindications: ["Acute infections or fevers", "Uncontrolled congestive heart failure", "Active, untreated blood clots (DVT)", "Severe kidney or liver failure"],
+      postSurgery: "MLD after liposuction accelerates healing by reducing swelling, bruising, and pain. It also helps prevent tissue hardening (fibrosis) and fluid pockets (seromas) by moving excess fluid toward the lymph nodes. Always get clearance from your surgeon — sessions typically begin within 24 to 72 hours post-operation.",
     },
   },
   {
@@ -75,7 +82,10 @@ const services = [
   },
 ];
 
-type ServiceInfo = { origin: string; history: string; benefits: string[]; contraindications: string[] };
+type ServiceInfo = {
+  origin: string; history: string; benefits: string[]; contraindications: string[];
+  intro?: string; timing?: string[]; hydration?: string; postSurgery?: string;
+};
 
 const InfoModal = ({ service, onClose }: { service: { name: string; info: ServiceInfo }; onClose: () => void }) => {
   const headingId = `modal-title-${service.name.replace(/\s+/g, "-").toLowerCase()}`;
@@ -107,6 +117,10 @@ const InfoModal = ({ service, onClose }: { service: { name: string; info: Servic
         <div style={{ width: "24px", height: "1px", background: "#C4A45A", marginBottom: "16px" }} />
         <h3 id={headingId} style={{ fontFamily: "'Playfair Display', serif", fontSize: "1.4rem", color: "#1E3D0E", fontWeight: 500, marginBottom: "24px" }}>{service.name}</h3>
 
+        {service.info.intro && (
+          <p style={{ fontSize: "1rem", color: "#5C3D1E", lineHeight: 1.75, fontFamily: "'Cormorant Garamond', serif", fontWeight: 300, marginBottom: "24px" }}>{service.info.intro}</p>
+        )}
+
         <p style={{ fontSize: "0.7rem", letterSpacing: "3px", color: "#8B6914", fontFamily: "'Playfair Display', serif", textTransform: "uppercase", marginBottom: "12px" }}>Benefits</p>
         <ul style={{ paddingLeft: 0, listStyle: "none", display: "flex", flexDirection: "column", gap: "8px", marginBottom: "28px" }}>
           {service.info.benefits.map((b, i) => (
@@ -116,9 +130,25 @@ const InfoModal = ({ service, onClose }: { service: { name: string; info: Servic
           ))}
         </ul>
 
+        {service.info.timing && (
+          <div style={{ borderTop: "1px solid rgba(139,105,20,0.15)", paddingTop: "22px", marginBottom: "22px" }}>
+            <p style={{ fontSize: "0.7rem", letterSpacing: "3px", color: "#8B6914", fontFamily: "'Playfair Display', serif", textTransform: "uppercase", marginBottom: "12px" }}>When to Book</p>
+            {service.info.timing.map((t, i) => (
+              <p key={i} style={{ fontSize: "1rem", color: "#5C3D1E", lineHeight: 1.75, fontFamily: "'Cormorant Garamond', serif", fontWeight: 300, marginBottom: "10px" }}>{t}</p>
+            ))}
+          </div>
+        )}
+
+        {service.info.hydration && (
+          <div style={{ borderTop: "1px solid rgba(139,105,20,0.15)", paddingTop: "22px", marginBottom: "22px" }}>
+            <p style={{ fontSize: "0.7rem", letterSpacing: "3px", color: "#8B6914", fontFamily: "'Playfair Display', serif", textTransform: "uppercase", marginBottom: "12px" }}>Hydration</p>
+            <p style={{ fontSize: "1rem", color: "#5C3D1E", lineHeight: 1.75, fontFamily: "'Cormorant Garamond', serif", fontWeight: 300 }}>{service.info.hydration}</p>
+          </div>
+        )}
+
         <div style={{ borderTop: "1px solid rgba(139,105,20,0.15)", paddingTop: "22px" }}>
           <p style={{ fontSize: "0.7rem", letterSpacing: "3px", color: "#8B6914", fontFamily: "'Playfair Display', serif", textTransform: "uppercase", marginBottom: "12px" }}>Please consult your doctor before booking if you have</p>
-          <ul style={{ paddingLeft: 0, listStyle: "none", display: "flex", flexDirection: "column", gap: "8px" }}>
+          <ul style={{ paddingLeft: 0, listStyle: "none", display: "flex", flexDirection: "column", gap: "8px", marginBottom: service.info.postSurgery ? "22px" : 0 }}>
             {service.info.contraindications.map((c, i) => (
               <li key={i} style={{ display: "flex", alignItems: "flex-start", gap: "10px", fontSize: "1rem", color: "#5C3D1E", lineHeight: 1.7, fontFamily: "'Cormorant Garamond', serif", fontWeight: 300 }}>
                 <span style={{ color: "#C4A45A", marginTop: "2px", flexShrink: 0 }}>—</span>{c}
@@ -126,6 +156,13 @@ const InfoModal = ({ service, onClose }: { service: { name: string; info: Servic
             ))}
           </ul>
         </div>
+
+        {service.info.postSurgery && (
+          <div style={{ borderTop: "1px solid rgba(139,105,20,0.15)", paddingTop: "22px" }}>
+            <p style={{ fontSize: "0.7rem", letterSpacing: "3px", color: "#8B6914", fontFamily: "'Playfair Display', serif", textTransform: "uppercase", marginBottom: "12px" }}>After Surgery</p>
+            <p style={{ fontSize: "1rem", color: "#5C3D1E", lineHeight: 1.75, fontFamily: "'Cormorant Garamond', serif", fontWeight: 300 }}>{service.info.postSurgery}</p>
+          </div>
+        )}
       </div>
     </div>
   );
