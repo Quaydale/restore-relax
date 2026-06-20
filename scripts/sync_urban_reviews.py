@@ -137,15 +137,18 @@ def main():
         if len(body) < 3:
             continue
 
+        rating = int(r.get("rating") or r.get("stars") or 5)
         to_insert.append({
             "name": "Urban Client",
-            "rating": 5,
+            "rating": rating,
             "body": body,
             "created_at": ts,
             "approved": True,
         })
 
-    print(f"New reviews to insert: {len(to_insert)}")
+    from collections import Counter
+    rating_counts = Counter(r["rating"] for r in to_insert)
+    print(f"New reviews to insert: {len(to_insert)} — ratings: {dict(sorted(rating_counts.items()))}")
 
     if not to_insert:
         print("Nothing to insert — database is up to date.")
