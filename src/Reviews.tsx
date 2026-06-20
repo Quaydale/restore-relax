@@ -193,7 +193,7 @@ export default function Reviews({ onPrivacyClick }: { onPrivacyClick: () => void
 
 
   return (
-    <section id="reviews" style={{ padding: "88px 0", background: "#F5F0E8" }}>
+    <section id="reviews" style={{ padding: "88px 0", background: "#EEF4EC" }}>
       <div style={{ maxWidth: "1080px", margin: "0 auto", padding: "0 24px" }}>
 
         {/* Header */}
