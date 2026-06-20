@@ -120,9 +120,8 @@ const InfoModal = ({ service, onClose }: { service: { name: string; info: Servic
   );
 };
 
-import phoenixImg from "./phoenix.png";
 const PhoenixIcon = ({ size = 112 }: { size?: number; color?: string }) => (
-  <img src={phoenixImg} alt="Phoenix" width={size} height={size} style={{ display: "block", margin: "0 auto", objectFit: "contain" }} />
+  <img src="/restore-relax/phoenix-logo.png" alt="Phoenix" width={size} height={size} style={{ display: "block", margin: "0 auto", objectFit: "contain" }} />
 );
 
 const LeafDecor = ({ style }: { style?: React.CSSProperties }) => (
