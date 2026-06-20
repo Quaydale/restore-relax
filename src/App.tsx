@@ -107,12 +107,6 @@ const InfoModal = ({ service, onClose }: { service: { name: string; info: Servic
         <div style={{ width: "24px", height: "1px", background: "#C4A45A", marginBottom: "16px" }} />
         <h3 id={headingId} style={{ fontFamily: "'Playfair Display', serif", fontSize: "1.4rem", color: "#1E3D0E", fontWeight: 500, marginBottom: "24px" }}>{service.name}</h3>
 
-        <p style={{ fontSize: "0.7rem", letterSpacing: "3px", color: "#8B6914", fontFamily: "'Playfair Display', serif", textTransform: "uppercase", marginBottom: "8px" }}>Origin</p>
-        <p style={{ fontSize: "1rem", color: "#5C3D1E", lineHeight: 1.75, fontFamily: "'Cormorant Garamond', serif", fontWeight: 300, marginBottom: "24px" }}>{service.info.origin}</p>
-
-        <p style={{ fontSize: "0.7rem", letterSpacing: "3px", color: "#8B6914", fontFamily: "'Playfair Display', serif", textTransform: "uppercase", marginBottom: "8px" }}>History</p>
-        <p style={{ fontSize: "1rem", color: "#5C3D1E", lineHeight: 1.75, fontFamily: "'Cormorant Garamond', serif", fontWeight: 300, marginBottom: "24px" }}>{service.info.history}</p>
-
         <p style={{ fontSize: "0.7rem", letterSpacing: "3px", color: "#8B6914", fontFamily: "'Playfair Display', serif", textTransform: "uppercase", marginBottom: "12px" }}>Benefits</p>
         <ul style={{ paddingLeft: 0, listStyle: "none", display: "flex", flexDirection: "column", gap: "8px", marginBottom: "28px" }}>
           {service.info.benefits.map((b, i) => (
