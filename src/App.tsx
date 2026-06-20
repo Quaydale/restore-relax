@@ -364,6 +364,24 @@ export default function App() {
               <strong style={{ fontStyle: "normal", fontFamily: "'Playfair Display', serif", color: "#1E3D0E" }}>Mobile / Home Visits</strong> — Travel fees are included in all treatment prices.
             </p>
           </div>
+
+          {/* Deep Tissue advisory */}
+          <div className="fade-up" style={{ marginTop: "24px", borderLeft: "3px solid #C4A45A", background: "#FAFAF7", border: "1px solid rgba(139,105,20,0.15)", borderLeftWidth: "3px", borderLeftColor: "#C4A45A", borderRadius: "3px", padding: "32px 36px" }}>
+            <p style={{ fontSize: "0.65rem", letterSpacing: "3.5px", color: "#8B6914", fontFamily: "'Playfair Display', serif", textTransform: "uppercase", marginBottom: "14px" }}>Deep Tissue Massage — Please Read</p>
+            <p style={{ fontSize: "1.05rem", color: "#5C3D1E", lineHeight: 1.85, fontFamily: "'Cormorant Garamond', serif", fontWeight: 300, marginBottom: "22px" }}>
+              Deep tissue massage targets the inner layers of muscles and connective tissues using slow, firm strokes and direct pressure. It is highly effective for relieving chronic pain, breaking up scar tissue, and improving mobility, but it can trigger temporary side effects like localised soreness and mild fatigue. Always communicate your pain tolerance clearly with your therapist — the pressure should feel intense but never sharply painful.
+            </p>
+            <p style={{ fontSize: "0.9rem", color: "#7A6B58", fontFamily: "'Playfair Display', serif", fontWeight: 500, marginBottom: "14px" }}>
+              Please consult your doctor before booking if you have any of the following:
+            </p>
+            <ul style={{ paddingLeft: 0, listStyle: "none", display: "flex", flexDirection: "column", gap: "8px" }}>
+              {["A blood clotting disorder", "Increased risk of injury, such as bone fractures", "Nerve injury", "Older age", "Any recent surgery or chemotherapy", "Wounds or skin conditions", "Hernia"].map((item, i) => (
+                <li key={i} style={{ display: "flex", alignItems: "flex-start", gap: "12px", fontSize: "1rem", color: "#5C3D1E", lineHeight: 1.7, fontFamily: "'Cormorant Garamond', serif", fontWeight: 300 }}>
+                  <span style={{ color: "#C4A45A", marginTop: "2px", flexShrink: 0 }}>—</span>{item}
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
       </section>
 
