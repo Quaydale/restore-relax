@@ -120,15 +120,9 @@ const InfoModal = ({ service, onClose }: { service: { name: string; info: Servic
   );
 };
 
-const LotusIcon = ({ size = 112, color = "#1E3D0E" }: { size?: number; color?: string }) => (
-  <svg viewBox="0 0 120 90" fill="none" xmlns="http://www.w3.org/2000/svg" width={size} height={size * 0.75} style={{ display: "block", margin: "0 auto" }}>
-    <path d="M60 80 C60 80 40 55 40 35 C40 20 50 10 60 10 C70 10 80 20 80 35 C80 55 60 80 60 80Z" stroke={color} strokeWidth="2" fill="none"/>
-    <path d="M60 78 C60 78 30 60 25 42 C20 28 30 15 42 18 C52 21 58 40 60 78Z" stroke={color} strokeWidth="2" fill="none"/>
-    <path d="M60 78 C60 78 90 60 95 42 C100 28 90 15 78 18 C68 21 62 40 60 78Z" stroke={color} strokeWidth="2" fill="none"/>
-    <path d="M45 72 C45 72 10 62 5 45 C0 30 12 18 25 22 C38 26 44 52 45 72Z" stroke={color} strokeWidth="1.5" fill="none" opacity="0.65"/>
-    <path d="M75 72 C75 72 110 62 115 45 C120 30 108 18 95 22 C82 26 76 52 75 72Z" stroke={color} strokeWidth="1.5" fill="none" opacity="0.65"/>
-    <path d="M50 82 Q60 78 70 82" stroke={color} strokeWidth="1.5" fill="none"/>
-  </svg>
+import phoenixImg from "./phoenix.png";
+const PhoenixIcon = ({ size = 112 }: { size?: number; color?: string }) => (
+  <img src={phoenixImg} alt="Phoenix" width={size} height={size} style={{ display: "block", margin: "0 auto", objectFit: "contain" }} />
 );
 
 const LeafDecor = ({ style }: { style?: React.CSSProperties }) => (
@@ -273,7 +267,7 @@ export default function App() {
           </svg>
 
           {/* Lotus */}
-          <LotusIcon size={116} color="#C4A45A" />
+          <PhoenixIcon size={116} color="#C4A45A" />
 
           {/* Brand name */}
           <h1 className="hero-name" style={{ fontFamily: "'Cormorant Garamond', serif", fontStyle: "italic", fontWeight: 300, fontSize: "3.8rem", color: "#fff", lineHeight: 1.1, marginTop: "2px" }}>
@@ -414,7 +408,7 @@ export default function App() {
         <LeafDecor style={{ position: "absolute", bottom: "-10px", right: "-8px", width: "110px", color: "#fff", opacity: 0.06, transform: "scaleX(-1) rotate(-5deg)" }} />
 
         <div className="fade-up" style={{ position: "relative" }}>
-          <LotusIcon size={80} color="#C4A45A" />
+          <PhoenixIcon size={80} color="#C4A45A" />
           <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontStyle: "italic", fontWeight: 300, fontSize: "clamp(2rem, 5vw, 3rem)", color: "#fff", marginTop: "8px", marginBottom: "16px" }}>
             Ready to restore & relax?
           </h2>
@@ -429,7 +423,7 @@ export default function App() {
 
       {/* ── FOOTER ── */}
       <footer style={{ background: "#111", padding: "40px 24px", textAlign: "center" }}>
-        <LotusIcon size={44} color="#C4A45A" />
+        <PhoenixIcon size={44} color="#C4A45A" />
         <p style={{ fontFamily: "'Cormorant Garamond', serif", fontStyle: "italic", fontSize: "1.3rem", color: "#EDE6D4", marginTop: "10px", marginBottom: "6px" }}>
           Restore & Relax
         </p>
