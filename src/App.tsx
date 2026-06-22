@@ -376,7 +376,7 @@ export default function App() {
                 <path id="badgeArc" d="M 22,140 A 118,118 0 0,1 258,140" />
               </defs>
               <text>
-                <textPath href="#badgeArc" startOffset="50%" textAnchor="middle" style={{ fontFamily: "'Playfair Display', serif", fontSize: "13px", letterSpacing: "6px", fill: "#1E3D0E" }}>
+                <textPath href="#badgeArc" startOffset="50%" textAnchor="middle" style={{ fontFamily: "'Playfair Display', serif", fontSize: "13px", letterSpacing: "6px", fill: "#C4A45A" }}>
                   MASSAGE THERAPY
                 </textPath>
               </text>
@@ -389,7 +389,7 @@ export default function App() {
 
             {/* "Restore & Relax" overlaid across the lower portion */}
             <div style={{ position: "absolute", bottom: "52px", left: 0, right: 0, textAlign: "center" }}>
-              <h1 className="hero-name" style={{ fontFamily: "'Cormorant Garamond', serif", fontStyle: "italic", fontWeight: 300, fontSize: "2rem", color: "#1E3D0E", lineHeight: 1.1, margin: 0, textShadow: "0 1px 6px rgba(255,255,255,0.4)" }}>
+              <h1 className="hero-name" style={{ fontFamily: "'Cormorant Garamond', serif", fontStyle: "italic", fontWeight: 300, fontSize: "2rem", color: "#C4A45A", lineHeight: 1.1, margin: 0, textShadow: "0 1px 12px rgba(0,0,0,0.6)" }}>
                 Restore & Relax
               </h1>
             </div>
