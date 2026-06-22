@@ -332,7 +332,7 @@ export default function App() {
 
       {/* Floating WA button — desktop left side, visible when scrolled past hero */}
       {scrolled && (
-        <a href="https://wa.me/[PHONE]" className="wa-float-left" target="_blank" rel="noopener noreferrer" aria-label="Book via WhatsApp">
+        <a href="https://wa.me/447735550042" className="wa-float-left" target="_blank" rel="noopener noreferrer" aria-label="Book via WhatsApp">
           <WaIcon size={20} />
           <span>Book</span>
         </a>
@@ -348,7 +348,7 @@ export default function App() {
           <a href="#about" className="nav-hide-sm" style={{ color: scrolled ? "#1E3D0E" : "#fff" }}>About</a>
           {/* Desktop: text link. Mobile: WA icon */}
           <a href="#book" className="nav-hide-sm" style={{ color: scrolled ? "#1E3D0E" : "#fff" }}>Book</a>
-          <a href="https://wa.me/[PHONE]" className="wa-nav-icon" target="_blank" rel="noopener noreferrer" aria-label="Book via WhatsApp">
+          <a href="https://wa.me/447735550042" className="wa-nav-icon" target="_blank" rel="noopener noreferrer" aria-label="Book via WhatsApp">
             <WaIcon size={18} />
           </a>
         </div>
@@ -479,13 +479,6 @@ export default function App() {
             ))}
           </div>
 
-          {/* Travel note */}
-          <div className="fade-up" style={{ marginTop: "44px", padding: "22px 28px", background: "#EDE6D4", border: "1px solid rgba(139,105,20,0.18)", borderRadius: "3px", textAlign: "center" }}>
-            <p style={{ fontSize: "1rem", color: "#5C3D1E", fontStyle: "italic" }}>
-              <strong style={{ fontStyle: "normal", fontFamily: "'Playfair Display', serif", color: "#1E3D0E" }}>Mobile / Home Visits</strong> — Travel fees are included in all treatment prices.
-            </p>
-          </div>
-
           {/* Deep Tissue advisory */}
           <div className="fade-up" style={{ marginTop: "24px", borderLeft: "3px solid #C4A45A", background: "#FAFAF7", border: "1px solid rgba(139,105,20,0.15)", borderLeftWidth: "3px", borderLeftColor: "#C4A45A", borderRadius: "3px", padding: "32px 36px" }}>
             <p style={{ fontSize: "0.65rem", letterSpacing: "3.5px", color: "#8B6914", fontFamily: "'Playfair Display', serif", textTransform: "uppercase", marginBottom: "14px" }}>Deep Tissue Massage — Please Read</p>
@@ -553,7 +546,7 @@ export default function App() {
           <p style={{ fontSize: "1.1rem", color: "rgba(255,255,255,0.72)", maxWidth: "460px", margin: "0 auto 40px", lineHeight: 1.8, fontStyle: "italic" }}>
             Message me on WhatsApp to check availability and arrange your session. I'll come to you.
           </p>
-          <a href="https://wa.me/[PHONE]" className="wa-btn" target="_blank" rel="noopener noreferrer" style={{ fontSize: "1.15rem", padding: "18px 44px" }}>
+          <a href="https://wa.me/447735550042" className="wa-btn" target="_blank" rel="noopener noreferrer" style={{ fontSize: "1.15rem", padding: "18px 44px" }}>
             <WaIcon size={26} /> Message on WhatsApp
           </a>
         </div>
@@ -567,9 +560,6 @@ export default function App() {
         </p>
         <p style={{ fontSize: "0.7rem", letterSpacing: "3px", color: "#7A6B58", fontFamily: "'Playfair Display', serif", textTransform: "uppercase" }}>
           Massage Therapy by Iulia
-        </p>
-        <p style={{ marginTop: "22px", fontSize: "0.78rem", color: "#444", fontFamily: "'Playfair Display', serif" }}>
-          Mobile / Home Visits · Travel fees included
         </p>
         <p style={{ marginTop: "16px", fontSize: "0.75rem", color: "#555", fontFamily: "'Playfair Display', serif" }}>
           <button onClick={() => setShowPrivacy(true)} style={{ background: "none", border: "none", color: "#7A9B70", cursor: "pointer", fontFamily: "'Playfair Display', serif", fontSize: "0.75rem", textDecoration: "underline", padding: 0 }}>
