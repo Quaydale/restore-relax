@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
+import phoenixLogo from "./phoenix.png";
 import "./fonts/fonts.css";
 import "./hero.css";
 import CoverageMap from "./CoverageMap";
@@ -231,7 +232,7 @@ const InfoModal = ({ service, onClose }: { service: { name: string; info: Servic
 };
 
 const PhoenixIcon = ({ size = 112 }: { size?: number; color?: string }) => (
-  <img src="/restore-relax/phoenix-logo.png" alt="Phoenix" width={size} height={size} style={{ display: "block", margin: "0 auto", objectFit: "contain" }} />
+  <img src={phoenixLogo} alt="Phoenix" width={size} height={size} style={{ display: "block", margin: "0 auto", objectFit: "contain" }} />
 );
 
 const LeafDecor = ({ style }: { style?: React.CSSProperties }) => (
