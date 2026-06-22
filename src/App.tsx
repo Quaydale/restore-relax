@@ -376,7 +376,7 @@ export default function App() {
                 <path id="badgeArc" d="M 22,140 A 118,118 0 0,1 258,140" />
               </defs>
               <text>
-                <textPath href="#badgeArc" startOffset="50%" textAnchor="middle" style={{ fontFamily: "'Playfair Display', serif", fontSize: "13px", letterSpacing: "6px", fill: "#E8F0E4" }}>
+                <textPath href="#badgeArc" startOffset="50%" textAnchor="middle" style={{ fontFamily: "'Playfair Display', serif", fontSize: "13px", letterSpacing: "6px", fill: "#C4A45A" }}>
                   MASSAGE THERAPY
                 </textPath>
               </text>
