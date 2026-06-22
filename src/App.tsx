@@ -363,40 +363,50 @@ export default function App() {
         <LeafDecor style={{ position: "absolute", bottom: "25%", left: "6%", width: "52px", color: "#fff", opacity: 0.12, transform: "scaleX(-1) rotate(-15deg)", zIndex: 1 }} />
 
         <div style={{ textAlign: "center", position: "relative", padding: "0 20px", zIndex: 2 }}>
-          {/* Arc "MASSAGE THERAPY" */}
-          <svg viewBox="0 0 300 75" style={{ width: "270px", display: "block", margin: "0 auto -4px" }}>
-            <defs>
-              <path id="topArc" d="M 28,68 A 122,122 0 0,1 272,68" />
-            </defs>
-            <text>
-              <textPath href="#topArc" startOffset="50%" textAnchor="middle" style={{ fontFamily: "'Playfair Display', serif", fontSize: "11.5px", letterSpacing: "7px", fill: "#E8F0E4" }}>
-                MASSAGE THERAPY
-              </textPath>
-            </text>
-          </svg>
 
-          {/* Lotus */}
-          <PhoenixIcon size={116} color="#C4A45A" />
+          {/* ── Circular badge logo ── */}
+          <div style={{ position: "relative", display: "inline-block", width: "280px", height: "280px" }}>
+            {/* Gold circle border */}
+            <svg viewBox="0 0 280 280" style={{ position: "absolute", inset: 0, width: "100%", height: "100%" }}>
+              <circle cx="140" cy="140" r="132" fill="none" stroke="#C4A45A" strokeWidth="1.5" opacity="0.7" />
 
-          {/* Brand name */}
-          <h1 className="hero-name" style={{ fontFamily: "'Cormorant Garamond', serif", fontStyle: "italic", fontWeight: 300, fontSize: "3.8rem", color: "#fff", lineHeight: 1.1, marginTop: "2px" }}>
-            Restore & Relax
-          </h1>
+              {/* "MASSAGE THERAPY" arc at top */}
+              <defs>
+                <path id="badgeArc" d="M 22,140 A 118,118 0 0,1 258,140" />
+              </defs>
+              <text>
+                <textPath href="#badgeArc" startOffset="50%" textAnchor="middle" style={{ fontFamily: "'Playfair Display', serif", fontSize: "13px", letterSpacing: "6px", fill: "#E8F0E4" }}>
+                  MASSAGE THERAPY
+                </textPath>
+              </text>
+            </svg>
 
-          {/* by Iulia */}
-          <p style={{ marginTop: "14px", fontFamily: "'Playfair Display', serif", fontSize: "0.9rem", letterSpacing: "3px", color: "#C4A45A" }}>
-            <svg viewBox="0 0 40 4" width="40" height="4" style={{ display: "inline-block", verticalAlign: "middle", marginRight: "12px" }}><line x1="0" y1="2" x2="40" y2="2" stroke="#C4A45A" strokeWidth="1"/></svg>
-            by Iulia
-            <svg viewBox="0 0 40 4" width="40" height="4" style={{ display: "inline-block", verticalAlign: "middle", marginLeft: "12px" }}><line x1="0" y1="2" x2="40" y2="2" stroke="#C4A45A" strokeWidth="1"/></svg>
-          </p>
+            {/* Phoenix image — sits inside the circle, shifted up slightly */}
+            <div style={{ position: "absolute", top: "28px", left: "50%", transform: "translateX(-50%)", width: "160px", height: "160px" }}>
+              <PhoenixIcon size={160} />
+            </div>
+
+            {/* "Restore & Relax" overlaid across the lower portion */}
+            <div style={{ position: "absolute", bottom: "52px", left: 0, right: 0, textAlign: "center" }}>
+              <h1 className="hero-name" style={{ fontFamily: "'Cormorant Garamond', serif", fontStyle: "italic", fontWeight: 300, fontSize: "2rem", color: "#fff", lineHeight: 1.1, margin: 0, textShadow: "0 1px 8px rgba(0,0,0,0.5)" }}>
+                Restore & Relax
+              </h1>
+            </div>
+          </div>
+
+          {/* "by IULIA" below the badge */}
+          <div style={{ marginTop: "10px" }}>
+            <p style={{ fontFamily: "'Cormorant Garamond', serif", fontStyle: "italic", fontSize: "1rem", color: "#C4A45A", letterSpacing: "1px", marginBottom: "2px" }}>by</p>
+            <p style={{ fontFamily: "'Playfair Display', serif", fontWeight: 700, fontSize: "1.6rem", color: "#C4A45A", letterSpacing: "8px", textTransform: "uppercase" }}>Iulia</p>
+          </div>
 
           {/* Tagline */}
-          <p style={{ marginTop: "28px", fontSize: "1.15rem", color: "rgba(255,255,255,0.82)", fontStyle: "italic", maxWidth: "360px", margin: "28px auto 0", lineHeight: 1.75 }}>
+          <p style={{ marginTop: "24px", fontSize: "1.1rem", color: "rgba(255,255,255,0.82)", fontStyle: "italic", maxWidth: "360px", margin: "24px auto 0", lineHeight: 1.75 }}>
             Professional massage therapy, delivered to your door.
           </p>
 
           {/* CTA */}
-          <div style={{ marginTop: "38px" }}>
+          <div style={{ marginTop: "36px" }}>
             <a href="#book" className="wa-btn" style={{ fontSize: "1.05rem" }}>
               <WaIcon size={22} /> Book via WhatsApp
             </a>
