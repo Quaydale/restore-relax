@@ -10,6 +10,7 @@ import SeoHead from "./SeoHead";
 const services = [
   {
     name: "Sports Massage",
+    image: "/restore-relax/service-sports.jpg",
     description: "Targeted therapy to aid recovery, prevent injury and enhance athletic performance.",
     prices: [{ duration: "60 min", price: "£70" }, { duration: "90 min", price: "£100" }],
     info: {
@@ -35,6 +36,7 @@ const services = [
   },
   {
     name: "Deep Tissue",
+    image: "/restore-relax/service-deep-tissue.jpg",
     description: "Firm pressure reaching deeper muscle layers to release chronic tension and knots.",
     prices: [{ duration: "60 min", price: "£70" }, { duration: "90 min", price: "£100" }],
     info: {
@@ -46,6 +48,7 @@ const services = [
   },
   {
     name: "Swedish Massage",
+    image: "/restore-relax/service-swedish.jpg",
     description: "Classic full-body relaxation massage using long, flowing strokes to calm the nervous system.",
     prices: [{ duration: "60 min", price: "£70" }, { duration: "90 min", price: "£100" }],
     info: {
@@ -65,6 +68,7 @@ const services = [
   },
   {
     name: "Pregnancy Massage",
+    image: "/restore-relax/service-pregnancy.jpg",
     description: "Gentle, nurturing massage tailored to support mothers-to-be through every trimester.",
     prices: [{ duration: "60 min", price: "£70" }],
     info: {
@@ -86,6 +90,7 @@ const services = [
   },
   {
     name: "Manual Lymphatic Drainage",
+    image: "/restore-relax/service-lymphatic.jpg",
     description: "Light, rhythmic techniques to stimulate lymph flow, reduce swelling and support immunity.",
     prices: [{ duration: "60 min", price: "£70" }],
     info: {
@@ -104,6 +109,7 @@ const services = [
   },
   {
     name: "Oncology Massage",
+    image: "/restore-relax/service-oncology.jpg",
     description: "Specially adapted, gentle massage designed to safely support those living with or beyond cancer.",
     prices: [{ duration: "60 min", price: "£60" }],
     info: {
@@ -456,24 +462,42 @@ export default function App() {
               <div
                 key={service.name}
                 className="service-card fade-up"
-                style={{ padding: "30px 26px", borderRadius: "3px", transitionDelay: `${i * 70}ms` }}
+                style={{ padding: 0, borderRadius: "3px", transitionDelay: `${i * 70}ms`, overflow: "hidden" }}
               >
-                <div style={{ width: "24px", height: "1px", background: "#C4A45A", marginBottom: "18px" }} />
-                <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "10px" }}>
-                  <h3 style={{ fontFamily: "'Playfair Display', serif", fontSize: "1.15rem", color: "#1E3D0E", fontWeight: 500 }}>
-                    {service.name}
-                  </h3>
-                  <button className="info-btn" onClick={() => setActiveInfo(service)} aria-label={`About ${service.name}`} title="History & benefits">i</button>
-                </div>
-                <p style={{ fontSize: "0.95rem", color: "#7A6B58", lineHeight: 1.75, marginBottom: "18px", fontStyle: "italic", fontWeight: 300 }}>
-                  {service.description}
-                </p>
-                <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
-                  {service.prices.map((p) => (
-                    <span key={p.duration} className="price-pill">
-                      {p.duration} — <strong style={{ color: "#1E3D0E", fontWeight: 600 }}>{p.price}</strong>
-                    </span>
-                  ))}
+                {service.image && (
+                  <div style={{ position: "relative", aspectRatio: "16/9", overflow: "hidden" }}>
+                    <img
+                      src={service.image}
+                      alt={service.name}
+                      style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+                    />
+                    <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(0,0,0,0.45) 0%, transparent 50%)" }} />
+                    <img
+                      src="/restore-relax/phoenix-logo.png"
+                      alt=""
+                      aria-hidden="true"
+                      style={{ position: "absolute", bottom: "8px", right: "10px", width: "36px", height: "36px", opacity: 0.85, filter: "drop-shadow(0 1px 3px rgba(0,0,0,0.6))" }}
+                    />
+                  </div>
+                )}
+                <div style={{ padding: "22px 26px 26px" }}>
+                  <div style={{ width: "24px", height: "1px", background: "#C4A45A", marginBottom: "14px" }} />
+                  <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "10px" }}>
+                    <h3 style={{ fontFamily: "'Playfair Display', serif", fontSize: "1.15rem", color: "#1E3D0E", fontWeight: 500 }}>
+                      {service.name}
+                    </h3>
+                    <button className="info-btn" onClick={() => setActiveInfo(service)} aria-label={`About ${service.name}`} title="History & benefits">i</button>
+                  </div>
+                  <p style={{ fontSize: "0.95rem", color: "#7A6B58", lineHeight: 1.75, marginBottom: "18px", fontStyle: "italic", fontWeight: 300 }}>
+                    {service.description}
+                  </p>
+                  <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
+                    {service.prices.map((p) => (
+                      <span key={p.duration} className="price-pill">
+                        {p.duration} — <strong style={{ color: "#1E3D0E", fontWeight: 600 }}>{p.price}</strong>
+                      </span>
+                    ))}
+                  </div>
                 </div>
               </div>
             ))}
