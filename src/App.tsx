@@ -389,7 +389,7 @@ export default function App() {
 
             {/* "Restore & Relax" overlaid across the lower portion */}
             <div style={{ position: "absolute", bottom: "52px", left: 0, right: 0, textAlign: "center" }}>
-              <h1 className="hero-name" style={{ fontFamily: "'Cormorant Garamond', serif", fontStyle: "italic", fontWeight: 300, fontSize: "2rem", color: "#fff", lineHeight: 1.1, margin: 0, textShadow: "0 1px 8px rgba(0,0,0,0.5)" }}>
+              <h1 className="hero-name" style={{ fontFamily: "'Cormorant Garamond', serif", fontStyle: "italic", fontWeight: 300, fontSize: "2rem", color: "#C4A45A", lineHeight: 1.1, margin: 0, textShadow: "0 1px 12px rgba(0,0,0,0.6)" }}>
                 Restore & Relax
               </h1>
             </div>
