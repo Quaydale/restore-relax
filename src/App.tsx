@@ -590,6 +590,9 @@ export default function App() {
             Privacy Policy
           </button>
         </p>
+        <p style={{ marginTop: "12px", fontSize: "0.7rem", color: "#444", fontFamily: "'Playfair Display', serif", letterSpacing: "1px" }}>
+          &copy; 2026 Mobile Massage
+        </p>
       </footer>
     </div>
   );
