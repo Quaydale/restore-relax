@@ -1,0 +1,17 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "if": "Bash(* push origin main*)",
+            "command": "echo '{\"hookSpecificOutput\":{\"hookEventName\":\"PostToolUse\",\"additionalContext\":\"Production deploy just pushed. Run /seo-sync to check if any SEO or AI search files need updating.\"}}'",
+            "statusMessage": "Checking if SEO files need updating..."
+          }
+        ]
+      }
+    ]
+  }
+}
