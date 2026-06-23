@@ -289,6 +289,21 @@ export default function App() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  useEffect(() => {
+    let currentVersion: string | null = null;
+    const check = async () => {
+      try {
+        const res = await fetch(`/version.json?t=${Date.now()}`);
+        const data = await res.json();
+        if (currentVersion === null) { currentVersion = data.v; return; }
+        if (data.v !== currentVersion) window.location.reload();
+      } catch { /* offline or error — ignore */ }
+    };
+    check();
+    const id = setInterval(check, 5 * 60 * 1000);
+    return () => clearInterval(id);
+  }, []);
+
   return (
     <div style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", backgroundColor: "#F5F0E8", minHeight: "100vh" }}>
       <SeoHead />
