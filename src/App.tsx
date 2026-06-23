@@ -10,7 +10,7 @@ import SeoHead from "./SeoHead";
 const services = [
   {
     name: "Sports Massage",
-    image: "/restore-relax/service-sports.jpg",
+    image: "/service-sports.jpg",
     description: "Targeted therapy to aid recovery, prevent injury and enhance athletic performance.",
     prices: [{ duration: "60 min", price: "£70" }, { duration: "90 min", price: "£100" }],
     info: {
@@ -36,7 +36,7 @@ const services = [
   },
   {
     name: "Deep Tissue",
-    image: "/restore-relax/service-deep-tissue.jpg",
+    image: "/service-deep-tissue.jpg",
     description: "Firm pressure reaching deeper muscle layers to release chronic tension and knots.",
     prices: [{ duration: "60 min", price: "£70" }, { duration: "90 min", price: "£100" }],
     info: {
@@ -48,7 +48,7 @@ const services = [
   },
   {
     name: "Swedish Massage",
-    image: "/restore-relax/service-swedish.jpg",
+    image: "/service-swedish.jpg",
     description: "Classic full-body relaxation massage using long, flowing strokes to calm the nervous system.",
     prices: [{ duration: "60 min", price: "£70" }, { duration: "90 min", price: "£100" }],
     info: {
@@ -68,7 +68,7 @@ const services = [
   },
   {
     name: "Pregnancy Massage",
-    image: "/restore-relax/service-pregnancy.jpg",
+    image: "/service-pregnancy.jpg",
     description: "Gentle, nurturing massage tailored to support mothers-to-be through every trimester.",
     prices: [{ duration: "60 min", price: "£70" }],
     info: {
@@ -90,7 +90,7 @@ const services = [
   },
   {
     name: "Manual Lymphatic Drainage",
-    image: "/restore-relax/service-lymphatic.jpg",
+    image: "/service-lymphatic.jpg",
     description: "Light, rhythmic techniques to stimulate lymph flow, reduce swelling and support immunity.",
     prices: [{ duration: "60 min", price: "£70" }],
     info: {
@@ -109,7 +109,7 @@ const services = [
   },
   {
     name: "Oncology Massage",
-    image: "/restore-relax/service-oncology.jpg",
+    image: "/service-oncology.jpg",
     description: "Specially adapted, gentle massage designed to safely support those living with or beyond cancer.",
     prices: [{ duration: "60 min", price: "£60" }],
     info: {
@@ -238,7 +238,7 @@ const InfoModal = ({ service, onClose }: { service: { name: string; info: Servic
 };
 
 const PhoenixIcon = ({ size = 112 }: { size?: number; color?: string }) => (
-  <img src="/restore-relax/phoenix-logo.png" alt="Phoenix" width={size} height={size} style={{ display: "block", margin: "0 auto", objectFit: "contain" }} />
+  <img src="/phoenix-logo.png" alt="Phoenix" width={size} height={size} style={{ display: "block", margin: "0 auto", objectFit: "contain" }} />
 );
 
 const LeafDecor = ({ style }: { style?: React.CSSProperties }) => (
@@ -473,7 +473,7 @@ export default function App() {
                     />
                     <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(0,0,0,0.45) 0%, transparent 50%)" }} />
                     <img
-                      src="/restore-relax/phoenix-logo.png"
+                      src="/phoenix-logo.png"
                       alt=""
                       aria-hidden="true"
                       style={{ position: "absolute", bottom: "8px", right: "10px", width: "36px", height: "36px", opacity: 0.85, filter: "drop-shadow(0 1px 3px rgba(0,0,0,0.6))" }}
