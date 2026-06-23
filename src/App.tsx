@@ -561,7 +561,7 @@ export default function App() {
 
           {/* Town chips */}
           <div className="fade-up" style={{ marginTop: "32px", display: "flex", flexWrap: "wrap", gap: "10px", justifyContent: "center" }}>
-            {["Woking", "Guildford", "Camberley", "Weybridge", "Cobham", "Leatherhead", "Byfleet", "West Byfleet", "Farnborough", "Aldershot", "Fleet", "Send", "Ripley", "Pyrford"].map(town => (
+            {["Woking", "Guildford", "Camberley", "Weybridge", "Cobham", "Oxshott", "Chobham", "Leatherhead", "Byfleet", "West Byfleet", "Farnborough", "Aldershot", "Fleet", "Send", "Ripley", "Pyrford"].map(town => (
               <span key={town} style={{ background: "#EDE6D4", border: "1px solid rgba(139,105,20,0.2)", padding: "6px 16px", borderRadius: "50px", fontSize: "0.85rem", color: "#5C3D1E", fontFamily: "'Playfair Display', serif" }}>
                 {town}
               </span>
