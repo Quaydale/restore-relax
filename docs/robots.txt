@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://quaydale.github.io/restore-relax/sitemap.xml
+Sitemap: https://mobile-massage.uk/sitemap.xml
