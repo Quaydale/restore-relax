@@ -30,4 +30,4 @@ Defined in `.claude/commands/security-check.md`. A fast pre-push pass — not a 
 
 ## Review notification email
 
-A Supabase Edge Function (`notify-new-review`) + Postgres trigger (`on_new_pending_review` on `reviews`) emails `iuliabotoran9@gmail.com` via Resend whenever a new review is submitted with `status = 'pending'`. Bulk Urban-sync imports (which insert as `status = 'approved'` directly) don't trigger it. The function needs a `RESEND_API_KEY` secret set in the Supabase dashboard under Edge Functions → `notify-new-review` → Secrets.
+A Supabase Edge Function (`notify-new-review`) + Postgres trigger (`on_new_pending_review` on `reviews`) emails the admin inbox via Resend whenever a new review is submitted with `status = 'pending'` (see Supabase Auth dashboard for the exact address — not repeated here since this repo is public). Bulk Urban-sync imports (which insert as `status = 'approved'` directly) don't trigger it. The function needs a `RESEND_API_KEY` secret set in the Supabase dashboard under Edge Functions → `notify-new-review` → Secrets.

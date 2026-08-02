@@ -178,7 +178,7 @@ Reviews are stored in a Supabase `reviews` table with this structure:
 
 ### New review email notification
 
-Every time a visitor submits a review (arrives as `status = 'pending'`), a Postgres trigger (`on_new_pending_review`) calls a Supabase Edge Function (`notify-new-review`), which emails `iuliabotoran9@gmail.com` via Resend with the reviewer's name, rating, and text, plus a link to the admin panel. Bulk Urban-sync imports insert directly as `status = 'approved'` and don't trigger this — only organic visitor submissions do.
+Every time a visitor submits a review (arrives as `status = 'pending'`), a Postgres trigger (`on_new_pending_review`) calls a Supabase Edge Function (`notify-new-review`), which emails the admin inbox (Iulia's address — see Supabase Auth dashboard for the exact address) via Resend with the reviewer's name, rating, and text, plus a link to the admin panel. Bulk Urban-sync imports insert directly as `status = 'approved'` and don't trigger this — only organic visitor submissions do.
 
 The function reads its Resend API key from a `RESEND_API_KEY` secret set in the Supabase dashboard (Edge Functions → `notify-new-review` → Secrets) — not committed to this repo.
 
@@ -276,7 +276,7 @@ The `/seo-sync` Claude Code skill (`/.claude/commands/seo-sync.md`) checks these
   - Public can `SELECT` where `status = 'approved'`
   - Public can `INSERT` (review submissions)
   - Authenticated users (admin) can `SELECT` all rows
-  - `UPDATE`/`DELETE` are restricted to an explicit email allow-list (`auth.email() in ('craig@quaydale.com', 'iuliabotoran9@gmail.com')`), not just "any authenticated user" — defense in depth in case public signups are ever accidentally re-enabled in Supabase Auth settings (they're currently disabled, which is the primary control)
+  - `UPDATE`/`DELETE` are restricted to an explicit email allow-list (`auth.email() in (...)` — see the live policy in Supabase for the exact addresses, not repeated here since this repo is public), not just "any authenticated user" — defense in depth in case public signups are ever accidentally re-enabled in Supabase Auth settings (they're currently disabled, which is the primary control)
   - The `notify_new_review()` trigger function has public `EXECUTE` revoked — it can only run via the `on_new_pending_review` trigger, not be called directly through the REST API
   - **Watch for duplicate policies on the same command.** Postgres OR's multiple permissive RLS policies together — a stray unrestricted policy sitting alongside a properly-scoped one silently wins. This exact bug shipped once (two legacy `qual: true` policies exposed all pending/declined reviews and bypassed insert validation until a security review caught it on 2026-08-02) and is now covered by the `/security-check` skill run before every push to `main`
   - No rate limiting on the public review-insert endpoint. Combined with the email-on-new-review trigger, a scripted flood of valid submissions could spam the admin inbox. Not yet fixed — would need a CAPTCHA (hCaptcha/Cloudflare Turnstile) on the review form

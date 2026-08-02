@@ -13,7 +13,7 @@ Run a lightweight security check before pushing to `main`. This is not a full pe
 Query `pg_policies` for the `reviews` table (via the Supabase MCP tools) and confirm:
 - Exactly one SELECT policy for public/anon scoped to `approved = true` (or `status = 'approved'`) — no unrestricted `qual: true` policy alongside it
 - Exactly one INSERT policy for public/anon with the name/rating/body length `with_check` constraints — no unrestricted `with_check: true` policy alongside it
-- UPDATE/DELETE are restricted to the admin email allow-list (`craig@quaydale.com`, `iuliabotoran9@gmail.com`), not "any authenticated user"
+- UPDATE/DELETE `qual` should be `auth.email() = ANY (ARRAY[...])` scoped to exactly the two known admin addresses (check the live policy in Supabase for the exact values — not stored in this repo since it's public), not `true`/"any authenticated user"
 - This matters because Postgres RLS policies for the same command are OR'd together — a second, more permissive policy silently defeats a stricter one even if both exist. This exact bug was found and fixed on 2026-08-02 (two legacy unrestricted policies had survived alongside properly-scoped replacements, exposing all pending/declined reviews to anyone with the public API key).
 
 ### 3. No SECURITY DEFINER function is publicly callable unless intended
