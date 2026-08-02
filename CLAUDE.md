@@ -10,6 +10,12 @@ Defined in `.claude/commands/seo-sync.md`. Decides whether the traditional SEO f
 
 **Run this before every push to `main`.** A `PreToolUse` hook (`.claude/settings.json`) fires automatically when a `git push origin main` command is about to run and reminds to run `/seo-sync` first, so SEO fixes land in the same deploy rather than a follow-up one.
 
+### `/security-check`
+
+Defined in `.claude/commands/security-check.md`. A fast pre-push pass — not a full pentest every time — that scans the diff for accidentally committed secrets, re-verifies the `reviews` table's Supabase RLS policies haven't regressed (see incident below), checks for publicly-callable `SECURITY DEFINER` functions, and spot-checks GitHub repo hygiene. The same pre-push hook that reminds about `/seo-sync` also reminds about this.
+
+**Known-fixed incident (2026-08-02):** a full security review found two legacy, unrestricted RLS policies (`public read reviews`, `public insert reviews`) coexisting with their properly-scoped replacements on the `reviews` table. Postgres OR's permissive policies together, so the unrestricted ones silently won — anyone with the public API key could read all pending/declined reviews and insert reviews bypassing length validation, regardless of the "correct" policies sitting right next to them. Both legacy policies were dropped and the fix verified with simulated `anon`-role queries. `/security-check` exists specifically so this class of bug (a stricter policy quietly defeated by a looser duplicate) gets caught before it ships again, not just once.
+
 ## Git workflow
 
 - Work on `dev`. Merge to `main` only to deploy — GitHub Pages serves `docs/` from `main`.
