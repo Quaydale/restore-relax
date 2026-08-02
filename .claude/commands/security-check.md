@@ -20,7 +20,7 @@ Query `pg_policies` for the `reviews` table (via the Supabase MCP tools) and con
 Run `get_advisors` (security) via the Supabase MCP tools and check for `anon_security_definer_function_executable` or `authenticated_security_definer_function_executable` warnings. The `notify_new_review()` trigger function should have `EXECUTE` revoked from `anon`/`authenticated`/`public` — it should only run via the `on_new_pending_review` trigger, never as a direct RPC call.
 
 ### 4. GitHub repo hygiene
-- Confirm `main` still has no force-push exposure the user hasn't explicitly accepted (branch protection is currently NOT enabled — this is a known, accepted state for this solo-maintainer public repo, not something to keep re-flagging unless it changes)
+- Confirm `main` branch protection is still active (`allow_force_pushes: false`, `allow_deletions: false` — enabled 2026-08-02). PR reviews are intentionally NOT required since the deploy workflow pushes directly to `main`.
 - If `gh secret list` shows any secret no longer referenced in `.github/workflows/*.yml`, flag it as removable
 
 ### 5. Public-facing probes (only if it's been a while since the last full check)
