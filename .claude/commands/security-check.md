@@ -22,6 +22,11 @@ Run `get_advisors` (security) via the Supabase MCP tools and check for `anon_sec
 ### 4. GitHub repo hygiene
 - Confirm `main` branch protection is still active (`allow_force_pushes: false`, `allow_deletions: false` — enabled 2026-08-02). PR reviews are intentionally NOT required since the deploy workflow pushes directly to `main`.
 - If `gh secret list` shows any secret no longer referenced in `.github/workflows/*.yml`, flag it as removable
+- Check for open Dependabot alerts (enabled 2026-08-02):
+  ```bash
+  gh api repos/Quaydale/restore-relax/dependabot/alerts --jq '.[] | select(.state=="open") | {package: .dependency.package.name, severity: .security_advisory.severity, summary: .security_advisory.summary}'
+  ```
+  Empty output = clean. If anything shows up, check whether the flagged package is actually used (unused ones — like `html-inline` was — can just be removed) before reaching for a version bump. Verify the production Parcel build still succeeds after any fix.
 
 ### 5. Public-facing probes (only if it's been a while since the last full check)
 - Confirm `.env`, `.git/config`, `package.json`, and similar sensitive paths still 404 on the live domain
