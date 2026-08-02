@@ -20,6 +20,7 @@ Defined in `.claude/commands/security-check.md`. A fast pre-push pass — not a 
 
 - Work on `dev`. Merge to `main` only to deploy — GitHub Pages serves `docs/` from `main`.
 - Never commit directly to `main`.
+- **Push `dev` to origin before merging into `main`.** Don't merge locally and only push `main` at the end — that leaves GitHub's `dev` branch stale even though local `dev` has moved on. Sequence: commit to `dev` → `git push origin dev` → `git checkout main && git merge dev && git push origin main` → `git checkout dev`.
 
 ## Build/deploy gotchas
 
